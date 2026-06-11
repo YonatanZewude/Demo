@@ -8,6 +8,7 @@
     "dev:studiolumi": "vite --mode studiolumi",
     "build": "tsc -b && vite build",
     "build:studiolumi": "tsc -b && vite build --mode studiolumi",
+    "start": "vite preview --host 0.0.0.0 --port 10000",
     "lint": "eslint .",
     "preview": "vite preview"
   },
