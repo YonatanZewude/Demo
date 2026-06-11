@@ -67,6 +67,19 @@ export function PublicLayout() {
                 </NavLink>
               )
             ))}
+            <NavLink
+              to="/admin"
+              className={({ isActive }) =>
+                cn(
+                  'text-xs font-semibold uppercase tracking-[0.1em] transition',
+                  isActive
+                    ? 'text-copper-600'
+                    : 'text-ink-900/50 hover:text-copper-600',
+                )
+              }
+            >
+              Admin
+            </NavLink>
             <Link
               to="/booking"
               className="inline-flex items-center justify-center rounded-full bg-ink-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-900"
