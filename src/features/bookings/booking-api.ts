@@ -37,23 +37,24 @@ export async function fetchBookingOccupancy(client: SupabaseClient<Database>, ta
 }
 
 export async function createBooking(client: SupabaseClient<Database>, payload: BookingFormValues & { end_time: string }) {
-  const { data, error } = await client
+  const id = crypto.randomUUID()
+
+  const { error } = await client
     .from('bookings')
     .insert({
+      id,
       ...payload,
       status: 'pending',
       customer_message: payload.customer_message || null,
     })
-    .select('id')
-    .single()
 
   if (error) {
     throw error
   }
 
-  await notifyBooking(data.id)
+  await notifyBooking(id)
 
-  return data
+  return { id }
 }
 
 async function notifyBooking(bookingId: string) {
