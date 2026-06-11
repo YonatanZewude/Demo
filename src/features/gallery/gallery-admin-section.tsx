@@ -88,7 +88,7 @@ export function GalleryAdminSection() {
   return (
     <div className="space-y-6">
       <SectionHeader
-        icon={Image}
+        eyebrow="Admin"
         title="Galleri"
         description="Hantera bilder som visas på hemsidans galleri-sektion"
       />
@@ -144,7 +144,6 @@ export function GalleryAdminSection() {
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-4 opacity-0 transition group-hover:opacity-100">
                   <Button
                     variant="ghost"
-                    size="sm"
                     className="h-auto rounded-full bg-white/90 p-2 text-ink-950 hover:bg-white"
                     onClick={() =>
                       toggleActiveMutation.mutate({
@@ -161,7 +160,6 @@ export function GalleryAdminSection() {
                   </Button>
                   <Button
                     variant="ghost"
-                    size="sm"
                     className="h-auto rounded-full bg-red-500/90 p-2 text-white hover:bg-red-600"
                     onClick={() => {
                       if (confirm('Är du säker på att du vill ta bort denna bild?')) {
