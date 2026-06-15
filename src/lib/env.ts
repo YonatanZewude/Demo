@@ -55,9 +55,9 @@ export const env = {
   salonPhone: import.meta.env.VITE_SALON_PHONE ?? '08-123 45 67',
   salonEmail: import.meta.env.VITE_SALON_EMAIL ?? 'hej@studiolumi.se',
   salonAddress: import.meta.env.VITE_SALON_ADDRESS ?? 'Storgatan 12, Stockholm',
-  salonInstagramUrl: import.meta.env.VITE_SALON_INSTAGRAM_URL ?? '',
-  salonFacebookUrl: import.meta.env.VITE_SALON_FACEBOOK_URL ?? '',
-  salonTiktokUrl: import.meta.env.VITE_SALON_TIKTOK_URL ?? '',
+  salonInstagramUrl: import.meta.env.VITE_SALON_INSTAGRAM_URL ?? 'https://instagram.com/studioluxe',
+  salonFacebookUrl: import.meta.env.VITE_SALON_FACEBOOK_URL ?? 'https://facebook.com/studioluxe',
+  salonTiktokUrl: import.meta.env.VITE_SALON_TIKTOK_URL ?? 'https://tiktok.com/@studioluxe',
   salonMapEmbedUrl: createGoogleMapsEmbedUrl(import.meta.env.VITE_SALON_ADDRESS ?? 'Storgatan 12, Stockholm'),
   servicesPageTitle:
     import.meta.env.VITE_SERVICES_PAGE_TITLE ?? 'Behandlingar med tydligt pris och tidsatgang',

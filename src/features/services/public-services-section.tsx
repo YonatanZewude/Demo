@@ -14,22 +14,12 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
   return (
     <div className="space-y-8">
       <section className="surface-panel surface-hero gold-ring px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+        <div>
           <SectionHeader
             eyebrow="Tjanster"
             title={env.servicesPageTitle}
             description={env.servicesPageDescription}
           />
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Card className="hairline-gold p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Valj behandling</p>
-              <p className="mt-3 text-sm leading-7 text-ink-900/72">Se behandlingar, behandlingstid och pris innan du bokar.</p>
-            </Card>
-            <Card className="hairline-gold p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Direkt online</p>
-              <p className="mt-3 text-sm leading-7 text-ink-900/72">Boka direkt online med ett enkelt och tydligt flode.</p>
-            </Card>
-          </div>
         </div>
       </section>
 
@@ -85,15 +75,6 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
         <Card className="p-6 text-sm text-ink-900/65">Inga aktiva tjanster finns just nu. Lagg till dem i admin innan sidan publiceras.</Card>
       ) : null}
 
-      <Card className="surface-dark overflow-hidden border-none flex flex-col items-start gap-5 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
-        <div>
-          <h2 className="text-2xl font-semibold text-white">Redo att boka?</h2>
-          <p className="mt-2 text-sm leading-7 text-white/72">Kunden kan ga vidare direkt till bokningssidan utan att skapa konto.</p>
-        </div>
-        <Link to="/booking" className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500">
-          Boka tid
-        </Link>
-      </Card>
     </div>
   )
 }
