@@ -118,9 +118,7 @@ export async function confirmBookingWithEmail(bookingId: string, adminToken: str
     throw new Error('Du maste vara inloggad som admin.')
   }
 
-  const origin = new URL(env.supabaseUrl)
-  const projectHost = origin.hostname.split('.')[0]
-  const endpoint = `https://${projectHost}.functions.supabase.co/confirm-booking/${bookingId}`
+  const endpoint = `${env.supabaseUrl}/functions/v1/confirm-booking/${bookingId}`
 
   const response = await fetch(endpoint, {
     method: 'PATCH',
