@@ -46,7 +46,7 @@ export function OpeningHoursAdminSection() {
   })
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <SectionHeader
         eyebrow="Oppettider"
         title="Veckoschema"
@@ -54,14 +54,14 @@ export function OpeningHoursAdminSection() {
       />
 
       <Card className="overflow-hidden p-0">
-        <div className="surface-gold flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
+        <div className="surface-gold flex flex-col gap-3 p-4 sm:p-6 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-copper-700">
               <Clock3 className="h-4 w-4" />
               Bokningsbara tider
             </div>
-            <h2 className="mt-4 text-2xl font-bold text-ink-950">Justera salongens vecka</h2>
-            <p className="mt-2 text-sm leading-6 text-ink-900/62">
+            <h2 className="mt-3 text-xl font-bold text-ink-950 sm:mt-4 sm:text-2xl">Justera salongens vecka</h2>
+            <p className="mt-1.5 text-sm leading-6 text-ink-900/62 sm:mt-2">
               Stangda dagar och lunchpauser tas automatiskt bort fran kundens lediga tider.
             </p>
           </div>
@@ -76,7 +76,7 @@ export function OpeningHoursAdminSection() {
         </div>
 
         <form
-          className="grid gap-3 p-4 sm:p-6"
+          className="grid gap-2.5 p-3 sm:gap-3 sm:p-6"
           id="opening-hours-form"
           onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
         >
@@ -87,31 +87,31 @@ export function OpeningHoursAdminSection() {
               <div
                 key={row.id}
                 className={cn(
-                  'rounded-3xl border p-5 transition',
+                  'rounded-2xl border p-3.5 transition sm:rounded-3xl sm:p-5',
                   isOpen ? 'border-salon-line bg-white shadow-sm' : 'border-transparent bg-sand-50 opacity-78',
                 )}
               >
                 <input type="hidden" {...form.register(`${index}.id`)} />
                 <input type="hidden" {...form.register(`${index}.weekday`, { valueAsNumber: true })} />
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className={cn('grid h-12 w-12 place-items-center rounded-2xl', isOpen ? 'bg-ink-950 text-gold-300' : 'bg-white text-ink-900/42')}>
-                      <Clock3 className="h-5 w-5" />
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className={cn('grid h-10 w-10 place-items-center rounded-2xl sm:h-12 sm:w-12', isOpen ? 'bg-ink-950 text-gold-300' : 'bg-white text-ink-900/42')}>
+                      <Clock3 className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-ink-950">{weekdayLabels[row.weekday]}</h3>
-                      <p className="mt-1 text-sm text-ink-900/58">
+                      <h3 className="text-base font-bold text-ink-950 sm:text-lg">{weekdayLabels[row.weekday]}</h3>
+                      <p className="text-sm text-ink-900/58 sm:mt-1">
                         {isOpen ? 'Tar emot bokningar' : 'Stangd for onlinebokning'}
                       </p>
                     </div>
                   </div>
-                  <label className="inline-flex w-fit items-center gap-3 rounded-full border border-salon-line bg-white px-4 py-2 text-sm font-bold text-ink-950">
-                    <input className="h-5 w-5 accent-copper-600" type="checkbox" {...form.register(`${index}.is_open`)} />
+                  <label className="inline-flex w-fit items-center gap-2.5 rounded-full border border-salon-line bg-white px-3 py-1.5 text-sm font-bold text-ink-950 sm:gap-3 sm:px-4 sm:py-2">
+                    <input className="h-4 w-4 accent-copper-600 sm:h-5 sm:w-5" type="checkbox" {...form.register(`${index}.is_open`)} />
                     Oppet
                   </label>
                 </div>
 
-                <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                <div className="mt-3 grid grid-cols-2 gap-2.5 sm:mt-5 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
                   <Field error={form.formState.errors[index]?.start_time?.message} label="Oppnar">
                     <TimeSelect {...form.register(`${index}.start_time`)} />
                   </Field>
@@ -126,7 +126,7 @@ export function OpeningHoursAdminSection() {
                   </Field>
                 </div>
 
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-sand-50 px-3 py-1.5 text-xs font-semibold text-ink-900/58">
+                <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-sand-50 px-2.5 py-1 text-xs font-semibold text-ink-900/58 sm:mt-4 sm:px-3 sm:py-1.5">
                   <Coffee className="h-4 w-4 text-copper-700" />
                   Lunchpaus ar valfri
                 </div>

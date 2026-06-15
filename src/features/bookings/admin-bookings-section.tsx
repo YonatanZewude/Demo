@@ -382,17 +382,17 @@ export function AdminBookingsSection() {
         </div>
       </Card>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 sm:gap-4">
         {bookings.map((booking) => (
           <Card key={booking.id} className="overflow-hidden p-0">
             <div className="grid gap-0 lg:grid-cols-[180px_minmax(0,1fr)_240px]">
-              <div className="surface-gold flex flex-row items-center gap-4 border-b border-salon-line p-5 lg:flex-col lg:items-start lg:border-b-0 lg:border-r">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-ink-950 text-gold-300">
-                  <CalendarDays className="h-5 w-5" />
+              <div className="surface-gold flex flex-row items-center gap-3 border-b border-salon-line p-4 sm:gap-4 sm:p-5 lg:flex-col lg:items-start lg:border-b-0 lg:border-r">
+                <div className="grid h-10 w-10 place-items-center rounded-2xl bg-ink-950 text-gold-300 sm:h-12 sm:w-12">
+                  <CalendarDays className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div>
                   <p className="text-sm font-bold capitalize text-ink-950">{formatDateLabel(booking.booking_date)}</p>
-                  <p className="mt-1 text-2xl font-bold text-ink-950">
+                  <p className="text-xl font-bold text-ink-950 sm:mt-1 sm:text-2xl">
                     {formatTimeLabel(booking.start_time)}
                   </p>
                   <p className="text-xs font-semibold text-ink-900/55">
@@ -401,17 +401,17 @@ export function AdminBookingsSection() {
                 </div>
               </div>
 
-              <div className="p-5">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h3 className="text-xl font-bold text-ink-950">{booking.customer_name}</h3>
+              <div className="p-4 sm:p-5">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <h3 className="text-lg font-bold text-ink-950 sm:text-xl">{booking.customer_name}</h3>
                   <Badge status={booking.status}>{statusLabels[booking.status]}</Badge>
                 </div>
 
-                <p className="mt-3 text-sm font-semibold text-copper-700">
+                <p className="mt-2 text-sm font-semibold text-copper-700 sm:mt-3">
                   {booking.services?.name ?? 'Okand tjanst'}
                 </p>
 
-                <div className="mt-4 grid gap-3 text-sm text-ink-900/68 md:grid-cols-2">
+                <div className="mt-3 grid gap-2.5 text-sm text-ink-900/68 md:grid-cols-2 sm:mt-4 sm:gap-3">
                   <a className="inline-flex items-center gap-2 hover:text-ink-950" href={`tel:${booking.customer_phone}`}>
                     <Phone className="h-4 w-4 text-copper-700" />
                     {booking.customer_phone}
@@ -423,17 +423,18 @@ export function AdminBookingsSection() {
                 </div>
 
                 {booking.customer_message ? (
-                  <div className="mt-4 rounded-2xl bg-sand-50 p-4 text-sm leading-6 text-ink-900/68">
+                  <div className="mt-3 rounded-2xl bg-sand-50 px-3 py-2.5 text-sm leading-5 text-ink-900/68 sm:mt-4 sm:p-4 sm:leading-6">
                     <span className="font-bold text-ink-950">Meddelande: </span>
                     {booking.customer_message}
                   </div>
                 ) : null}
               </div>
 
-              <div className="flex flex-col justify-between gap-4 border-t border-salon-line bg-white p-5 lg:border-l lg:border-t-0">
-                <div>
-                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-ink-900/45">Status</p>
+              <div className="flex flex-col justify-between gap-3 border-t border-salon-line bg-white p-4 sm:p-5 lg:border-l lg:border-t-0">
+                <div className="grid gap-2 sm:block">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-900/45 sm:mb-2">Status</p>
                   <Select
+                    className="w-full sm:w-auto lg:w-full"
                     value={booking.status}
                     onChange={(event) => {
                       const nextStatus = event.target.value as BookingStatus
@@ -455,7 +456,7 @@ export function AdminBookingsSection() {
                 </div>
                 {booking.status !== 'confirmed' ? (
                   <Button
-                    className="w-full"
+                    className="min-h-11 w-full text-sm"
                     disabled={confirmMutation.isPending}
                     onClick={() => confirmMutation.mutate(booking.id)}
                     type="button"
@@ -465,7 +466,7 @@ export function AdminBookingsSection() {
                   </Button>
                 ) : null}
                 <Button
-                  className={cn('w-full', deleteMutation.isPending ? 'opacity-70' : null)}
+                  className={cn('min-h-11 w-full text-sm', deleteMutation.isPending ? 'opacity-70' : null)}
                   disabled={deleteMutation.isPending}
                   onClick={() => setBookingToDelete(booking)}
                   variant="danger"
