@@ -10,7 +10,7 @@ export function NotFoundPage() {
         <p className="mt-4 text-base leading-7 text-ink-900/70">Ga tillbaka till startsidan eller oppna bokningen for att fortsatta.</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link to="/" className="rounded-full bg-copper-600 px-6 py-3 text-sm font-semibold text-white">Till startsidan</Link>
-          <Link to="/booking" className="rounded-full border border-salon-line bg-white px-6 py-3 text-sm font-semibold text-ink-950">Till bokning</Link>
+          <Link to="/booking" className="rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500">Till bokning</Link>
         </div>
       </section>
     </PageShell>

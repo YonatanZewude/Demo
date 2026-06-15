@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Menu, Scissors, Sparkles, X } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { env } from '../../lib/env'
+import { useAdminAccess } from '../../features/admin/use-admin-access'
+import { env, isConfigured } from '../../lib/env'
 import { cn } from '../../lib/cn'
 
 const links = [
@@ -10,6 +11,48 @@ const links = [
   { to: '/#gallery', label: 'Galleri', isHash: true },
   { to: '/contact', label: 'Kontakt' },
 ]
+
+function AdminMenuLink() {
+  if (!isConfigured.clerk || !isConfigured.supabase) {
+    return (
+      <NavLink
+        to="/admin"
+        className={({ isActive }) =>
+          cn(
+            'text-xs font-semibold uppercase tracking-[0.1em] transition',
+            isActive
+              ? 'text-copper-600'
+              : 'text-ink-900/50 hover:text-copper-600',
+          )
+        }
+      >
+        Login
+      </NavLink>
+    )
+  }
+
+  return <AdminMenuLinkWithAccess />
+}
+
+function AdminMenuLinkWithAccess() {
+  const { isLoading, isAdmin } = useAdminAccess()
+
+  return (
+    <NavLink
+      to="/admin"
+      className={({ isActive }) =>
+        cn(
+          'text-xs font-semibold uppercase tracking-[0.1em] transition',
+          isActive
+            ? 'text-copper-600'
+            : 'text-ink-900/50 hover:text-copper-600',
+        )
+      }
+    >
+      {isLoading ? 'Login' : isAdmin ? 'ADMIN' : 'Login'}
+    </NavLink>
+  )
+}
 
 export function PublicLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -67,22 +110,10 @@ export function PublicLayout() {
                 </NavLink>
               )
             ))}
-            <NavLink
-              to="/admin"
-              className={({ isActive }) =>
-                cn(
-                  'text-xs font-semibold uppercase tracking-[0.1em] transition',
-                  isActive
-                    ? 'text-copper-600'
-                    : 'text-ink-900/50 hover:text-copper-600',
-                )
-              }
-            >
-              Admin
-            </NavLink>
+            <AdminMenuLink />
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center rounded-full bg-ink-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-900"
+              className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
             >
               Boka tid
             </Link>
@@ -130,7 +161,7 @@ export function PublicLayout() {
               ))}
               <Link
                 to="/booking"
-                className="inline-flex items-center justify-center rounded-2xl bg-ink-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-ink-900"
+                className="inline-flex items-center justify-center rounded-2xl border border-gold-500 bg-gold-400 px-4 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
               >
                 Boka tid
               </Link>

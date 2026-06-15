@@ -32,6 +32,24 @@ const demoReviews = [
   { name: 'Elin T.', quote: 'Jag bokade min tid direkt fran mobilen. Superenkelt.' },
 ]
 
+const curatedExperienceCards = [
+  {
+    title: 'Skagg och precision',
+    subtitle: 'Klassisk barbering med modern finish',
+    image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Farg och styling',
+    subtitle: 'Skonsam teknik med personligt uttryck',
+    image: 'https://images.unsplash.com/photo-1523263685509-57c1d050d19b?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Junior klippning',
+    subtitle: 'Trygg upplevelse for barn och ungdom',
+    image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=900&q=80',
+  },
+]
+
 export function HomePage() {
   const [activeHeroIndex, setActiveHeroIndex] = useState(0)
 
@@ -73,7 +91,7 @@ export function HomePage() {
   }, [heroSlides.length])
 
   return (
-    <PageShell className="gap-0">
+    <PageShell className="gap-0 pt-0 sm:pt-0 lg:pt-0">
       {/* Hero Section */}
       <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden">
         <div className="absolute inset-0">
@@ -94,10 +112,10 @@ export function HomePage() {
         <div className="relative mx-auto flex min-h-[75vh] max-w-7xl items-end px-6 pb-14 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:min-h-[82vh] lg:px-12 lg:pb-24">
           <div className="max-w-3xl space-y-6 text-white sm:space-y-7">
             <p className="text-xs font-semibold uppercase tracking-[0.36em] text-gold-300/90 sm:text-sm">
-              Varje klippning, ett hantverk
+              Signaturstil med precision och personlighet
             </p>
 
-            <h1 className="font-serif text-5xl leading-[0.98] tracking-[0.01em] text-white sm:text-6xl lg:text-8xl">
+            <h1 className="font-serif text-4xl leading-[1.02] tracking-[0.01em] text-white sm:text-5xl lg:text-7xl">
               {env.salonHeroTitle}
             </h1>
 
@@ -106,7 +124,7 @@ export function HomePage() {
             </p>
 
             <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center">
-              <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-300/55 bg-gold-400/20 px-8 py-4 text-base font-semibold text-white transition hover:bg-gold-400/35">
+              <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-8 py-4 text-base font-semibold text-ink-950 transition hover:bg-gold-500">
                 Boka tid
                 <ArrowRight className="h-5 w-5" />
               </Link>
@@ -160,13 +178,60 @@ export function HomePage() {
           </div>
 
           <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-950 px-8 py-4 text-base font-semibold text-white transition hover:bg-ink-900">
+            <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-8 py-4 text-base font-semibold text-ink-950 transition hover:bg-gold-500">
               Boka tid
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link to="/services" className="inline-flex items-center justify-center rounded-full border border-ink-900/10 px-8 py-4 text-base font-semibold text-ink-900 transition hover:bg-sand-50">
               Se priser
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Signature Services */}
+      <section className="relative overflow-hidden bg-[linear-gradient(140deg,#07090d_0%,#0d1118_48%,#141b24_100%)] py-14 text-white sm:py-16 lg:py-20">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.2),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(99,133,168,0.14),transparent_35%)]" />
+
+        <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+            <div className="space-y-6">
+              <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-gold-300/90">
+                <span className="h-px w-8 bg-gold-300/70" />
+                Skraddarsytt for din stil
+              </p>
+              <h2 className="font-serif text-4xl leading-tight text-white sm:text-5xl">
+                Mer an en klippning, en helhetsupplevelse
+              </h2>
+              <p className="max-w-xl text-base leading-relaxed text-white/74 sm:text-lg">
+                Oavsett om du vill ha en skarp fade, en mjuk fargovergang eller barnklippning med lugn hand,
+                formar vi behandlingen efter dig. Var metod bygger pa precision, tempo och detaljer som haller.
+              </p>
+              <Link
+                to="/services"
+                className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
+              >
+                Upptack behandlingar
+              </Link>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {curatedExperienceCards.map((card) => (
+                <article key={card.title} className="overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]">
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img
+                      alt={card.title}
+                      src={card.image}
+                      className="h-full w-full object-cover transition duration-700 hover:scale-105"
+                    />
+                  </div>
+                  <div className="space-y-2 px-5 py-5">
+                    <h3 className="font-serif text-3xl leading-[1.04] text-ink-950">{card.title}</h3>
+                    <p className="text-sm leading-6 text-ink-900/66">{card.subtitle}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>

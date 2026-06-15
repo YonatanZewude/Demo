@@ -69,7 +69,7 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
                         <span className="text-base font-semibold text-ink-950">{service.priceLabel}</span>
                       </div>
                     </div>
-                    <Link to="/booking" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-ink-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-900">
+                    <Link to="/booking" className="inline-flex shrink-0 items-center justify-center rounded-xl border border-gold-500 bg-gold-400 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500">
                       Boka
                     </Link>
                   </div>
@@ -90,7 +90,7 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
           <h2 className="text-2xl font-semibold text-white">Redo att boka?</h2>
           <p className="mt-2 text-sm leading-7 text-white/72">Kunden kan ga vidare direkt till bokningssidan utan att skapa konto.</p>
         </div>
-        <Link to="/booking" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-sand-50">
+        <Link to="/booking" className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500">
           Boka tid
         </Link>
       </Card>
