@@ -20,16 +20,16 @@ export function AdminOverview() {
   return (
     <div className="space-y-6">
       <SectionHeader
-        eyebrow="Oversikt"
-        title="Nyckeltal for salongens drift"
-        description="Fa en snabb bild av behandlingsutbud, oppna dagar och bokningar som vantar pa handlaggning."
+        eyebrow="Översikt"
+        title="Nyckeltal för salongens drift"
+        description="Få en snabb bild av behandlingsutbud, öppna dagar och bokningar som väntar på handläggning."
       />
 
       <div className="grid gap-4 md:grid-cols-3">
         {[
-          { title: 'Aktiva tjanster', value: activeServices, icon: Scissors },
-          { title: 'Oppna veckodagar', value: openDays, icon: Clock3 },
-          { title: 'Vantar bekraftelse', value: pendingBookings, icon: CalendarDays },
+          { title: 'Aktiva tjänster', value: activeServices, icon: Scissors },
+          { title: 'Öppna veckodagar', value: openDays, icon: Clock3 },
+          { title: 'Väntar bekräftelse', value: pendingBookings, icon: CalendarDays },
         ].map(({ icon: Icon, title, value }) => (
           <Card key={title} className="p-6">
             <div className="flex items-center justify-between gap-4">
