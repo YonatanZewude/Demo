@@ -83,7 +83,7 @@ export function HomePage() {
               alt={slide.title}
               src={slide.image}
               className={cn(
-                'absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-[2200ms] ease-in-out',
+                'absolute inset-0 h-full w-full object-cover object-[center_38%] sm:object-[center_34%] lg:object-[center_30%] transition-opacity duration-[2200ms] ease-in-out',
                 index === activeHeroIndex ? 'opacity-100' : 'opacity-0',
               )}
             />
