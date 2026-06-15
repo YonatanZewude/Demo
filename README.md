@@ -27,7 +27,8 @@ Protected routes:
 - `src/pages` contains route-level page composition.
 - `src/types` contains the typed Supabase contract.
 - `supabase/migrations` contains the SQL schema and RLS policies.
-- `supabase/functions/send-booking-emails` contains the Resend edge function.
+- `supabase/functions/send-booking-emails` contains the public booking notification function.
+- `supabase/functions/confirm-booking` confirms admin bookings and sends customer confirmation email through Resend.
 
 ## Environment variables
 
@@ -81,10 +82,11 @@ insert into public.admin_users (clerk_user_id)
 values ('user_123');
 ```
 
-3. Deploy the edge function om du vill skicka bokningsmejl:
+3. Deploy the edge functions om du vill skicka bokningsmejl:
 
 ```bash
 supabase functions deploy send-booking-emails
+supabase functions deploy confirm-booking
 ```
 
 4. Set function secrets:
@@ -94,6 +96,10 @@ supabase secrets set RESEND_API_KEY=... ADMIN_NOTIFICATION_EMAIL=... SALON_NAME=
 ```
 
 `SALON_NAME`, `EMAIL_FROM_NAME` och `EMAIL_FROM_ADDRESS` styr företagsspecifik branding i bokningsmejlen.
+
+`RESEND_API_KEY` är en server-side secret för Supabase Edge Functions. Använd aldrig `VITE_RESEND_API_KEY`, eftersom `VITE_`-variabler exponeras i frontend-bundlen.
+
+`confirm-booking` använder Resend via Edge Function-importen `npm:resend` och anropas när admin bekräftar en bokning. Endpointen uppdaterar bokningen till `confirmed` och skickar sedan kundens bekräftelsemail.
 
 ## Development
 

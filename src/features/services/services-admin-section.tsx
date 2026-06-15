@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
+import { ConfirmDialog } from '../../components/ui/confirm-dialog'
 import { SectionHeader } from '../../components/ui/section-header'
 import { useSupabaseClient } from '../../lib/supabase'
 import { createService, deleteService, fetchAdminServices, updateService } from './service-api'
@@ -16,6 +17,7 @@ export function ServicesAdminSection() {
   const supabase = useSupabaseClient()
   const queryClient = useQueryClient()
   const [editingService, setEditingService] = useState<Service | null>(null)
+  const [serviceToDelete, setServiceToDelete] = useState<Service | null>(null)
 
   const servicesQuery = useQuery({
     queryKey: ['services', 'admin'],
@@ -53,6 +55,7 @@ export function ServicesAdminSection() {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteService(supabase, id),
     onSuccess: async () => {
+      setServiceToDelete(null)
       toast.success('Tjansten togs bort.')
       await invalidate()
     },
@@ -65,6 +68,24 @@ export function ServicesAdminSection() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog
+        confirmLabel="Ja, radera"
+        description={
+          serviceToDelete
+            ? `Tjansten "${serviceToDelete.name}" tas bort fran admin och kan inte langre bokas.`
+            : 'Tjansten tas bort.'
+        }
+        isLoading={deleteMutation.isPending}
+        onCancel={() => setServiceToDelete(null)}
+        onConfirm={() => {
+          if (serviceToDelete) {
+            deleteMutation.mutate(serviceToDelete.id)
+          }
+        }}
+        open={Boolean(serviceToDelete)}
+        title="Vill du radera tjansten?"
+      />
+
       <SectionHeader
         eyebrow="Tjanster"
         title="Behandlingsmeny"
@@ -133,11 +154,7 @@ export function ServicesAdminSection() {
                   </Button>
                   <Button
                     disabled={deleteMutation.isPending}
-                    onClick={() => {
-                      if (confirm('Vill du radera tjansten?')) {
-                        deleteMutation.mutate(service.id)
-                      }
-                    }}
+                    onClick={() => setServiceToDelete(service)}
                     variant="danger"
                   >
                     <Trash2 className="h-4 w-4" />

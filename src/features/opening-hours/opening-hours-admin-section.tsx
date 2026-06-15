@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
-import { Field, Input } from '../../components/ui/field'
+import { Field, TimeSelect } from '../../components/ui/field'
 import { SectionHeader } from '../../components/ui/section-header'
 import { cn } from '../../lib/cn'
 import { useSupabaseClient } from '../../lib/supabase'
@@ -113,16 +113,16 @@ export function OpeningHoursAdminSection() {
 
                 <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                   <Field error={form.formState.errors[index]?.start_time?.message} label="Oppnar">
-                    <Input type="time" {...form.register(`${index}.start_time`)} />
+                    <TimeSelect {...form.register(`${index}.start_time`)} />
                   </Field>
                   <Field error={form.formState.errors[index]?.end_time?.message} label="Stanger">
-                    <Input type="time" {...form.register(`${index}.end_time`)} />
+                    <TimeSelect {...form.register(`${index}.end_time`)} />
                   </Field>
                   <Field error={form.formState.errors[index]?.break_start?.message} label="Lunch start">
-                    <Input type="time" {...form.register(`${index}.break_start`)} />
+                    <TimeSelect {...form.register(`${index}.break_start`)} />
                   </Field>
                   <Field error={form.formState.errors[index]?.break_end?.message} label="Lunch slut">
-                    <Input type="time" {...form.register(`${index}.break_end`)} />
+                    <TimeSelect {...form.register(`${index}.break_end`)} />
                   </Field>
                 </div>
 

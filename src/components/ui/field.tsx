@@ -43,6 +43,25 @@ export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
   )
 }
 
+const timeOptions = Array.from({ length: 24 * 4 }, (_, index) => {
+  const hours = Math.floor(index / 4)
+  const minutes = (index % 4) * 15
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+})
+
+export function TimeSelect({ className, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <Select className={cn('tabular-nums', className)} {...props}>
+      <option value="">--:--</option>
+      {timeOptions.map((time) => (
+        <option key={time} value={time}>
+          {time}
+        </option>
+      ))}
+    </Select>
+  )
+}
+
 export function Textarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea

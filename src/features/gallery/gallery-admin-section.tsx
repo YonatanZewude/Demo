@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Eye, EyeOff, Image, Trash2, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
+import { ConfirmDialog } from '../../components/ui/confirm-dialog'
 import { SectionHeader } from '../../components/ui/section-header'
 import { useSupabaseClient } from '../../lib/supabase'
 import {
@@ -20,6 +22,7 @@ export function GalleryAdminSection() {
   const queryClient = useQueryClient()
   const supabase = useSupabaseClient()
   const [uploading, setUploading] = useState(false)
+  const [imageToDelete, setImageToDelete] = useState<{ id: string; image_url: string; title: string } | null>(null)
 
   const imagesQuery = useQuery({
     queryKey: ['gallery', 'admin'],
@@ -44,6 +47,7 @@ export function GalleryAdminSection() {
       }
     },
     onSuccess: () => {
+      setImageToDelete(null)
       queryClient.invalidateQueries({ queryKey: ['gallery'] })
     },
   })
@@ -76,12 +80,12 @@ export function GalleryAdminSection() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Valj en bildfil.')
+      toast.error('Valj en bildfil.')
       return
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Bilden far max vara 5MB.')
+      toast.error('Bilden far max vara 5MB.')
       return
     }
 
@@ -91,6 +95,27 @@ export function GalleryAdminSection() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog
+        confirmLabel="Ja, radera"
+        description={
+          imageToDelete
+            ? `Bilden "${imageToDelete.title}" tas bort fran galleriet och lagringen.`
+            : 'Bilden tas bort fran galleriet.'
+        }
+        isLoading={deleteMutation.isPending}
+        onCancel={() => setImageToDelete(null)}
+        onConfirm={() => {
+          if (imageToDelete) {
+            deleteMutation.mutate({
+              id: imageToDelete.id,
+              image_url: imageToDelete.image_url,
+            })
+          }
+        }}
+        open={Boolean(imageToDelete)}
+        title="Vill du ta bort bilden?"
+      />
+
       <SectionHeader
         eyebrow="Galleri"
         title="Bildbibliotek"
@@ -207,14 +232,7 @@ export function GalleryAdminSection() {
                         aria-label={`Ta bort ${image.title}`}
                         className="px-3"
                         disabled={deleteMutation.isPending}
-                        onClick={() => {
-                          if (confirm('Vill du ta bort denna bild?')) {
-                            deleteMutation.mutate({
-                              id: image.id,
-                              image_url: image.image_url,
-                            })
-                          }
-                        }}
+                        onClick={() => setImageToDelete(image)}
                         variant="danger"
                       >
                         <Trash2 className="h-4 w-4" />

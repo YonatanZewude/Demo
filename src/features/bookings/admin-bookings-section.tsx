@@ -1,19 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { CalendarDays, Clock3, Mail, Phone, RotateCcw, Trash2, UserRound } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '@clerk/clerk-react'
+import { CalendarDays, CheckCircle2, Clock3, Mail, Phone, RotateCcw, Trash2, UserRound } from 'lucide-react'
+import { format, startOfToday } from 'date-fns'
+import { useEffect, useMemo, useState } from 'react'
+import { useForm, useWatch } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
+import { ConfirmDialog } from '../../components/ui/confirm-dialog'
 import { Field, Input, Select } from '../../components/ui/field'
 import { SectionHeader } from '../../components/ui/section-header'
 import { cn } from '../../lib/cn'
 import { formatTimeLabel } from '../../lib/time'
 import { useSupabaseClient } from '../../lib/supabase'
-import { deleteBooking, fetchBookings, updateBookingStatus } from './booking-api'
+import { fetchOpeningHours } from '../opening-hours/opening-hours-api'
+import { fetchActiveServices } from '../services/service-api'
+import {
+  confirmBookingWithEmail,
+  createAdminBooking,
+  deleteBooking,
+  fetchBookingOccupancy,
+  fetchBookings,
+  updateBookingStatus,
+} from './booking-api'
+import { getAvailableTimeSlots } from './booking-availability'
+import { bookingFormSchema, type BookingFormValues } from './booking-schema'
+import type { BookingWithService } from './booking-types'
 import type { BookingStatus } from './booking-types'
 
 const statuses: BookingStatus[] = ['pending', 'confirmed', 'completed', 'cancelled']
+const minDate = format(startOfToday(), 'yyyy-MM-dd')
 
 const statusLabels: Record<BookingStatus, string> = {
   pending: 'Vantar',
@@ -32,13 +50,46 @@ function formatDateLabel(date: string) {
 
 export function AdminBookingsSection() {
   const supabase = useSupabaseClient()
+  const { getToken } = useAuth()
   const queryClient = useQueryClient()
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<BookingStatus | 'all'>('all')
+  const [bookingToDelete, setBookingToDelete] = useState<BookingWithService | null>(null)
+  const adminForm = useForm<BookingFormValues>({
+    resolver: zodResolver(bookingFormSchema),
+    defaultValues: {
+      service_id: '',
+      booking_date: minDate,
+      start_time: '',
+      customer_name: '',
+      customer_phone: '',
+      customer_email: '',
+      customer_message: '',
+    },
+  })
+  const adminServiceId = useWatch({ control: adminForm.control, name: 'service_id' })
+  const adminBookingDate = useWatch({ control: adminForm.control, name: 'booking_date' })
+  const adminStartTime = useWatch({ control: adminForm.control, name: 'start_time' })
 
   const query = useQuery({
     queryKey: ['bookings', selectedDate, selectedStatus],
     queryFn: () => fetchBookings(supabase, { date: selectedDate || undefined, status: selectedStatus }),
+  })
+
+  const servicesQuery = useQuery({
+    queryKey: ['services', 'active'],
+    queryFn: () => fetchActiveServices(supabase),
+  })
+
+  const openingHoursQuery = useQuery({
+    queryKey: ['opening-hours', 'public'],
+    queryFn: () => fetchOpeningHours(supabase),
+  })
+
+  const occupancyQuery = useQuery({
+    enabled: Boolean(adminBookingDate),
+    queryKey: ['booking-occupancy', adminBookingDate],
+    queryFn: () => fetchBookingOccupancy(supabase, adminBookingDate),
   })
 
   const invalidate = async () => {
@@ -56,9 +107,80 @@ export function AdminBookingsSection() {
     },
   })
 
+  const confirmMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const token = await getToken({ template: 'supabase' })
+      return confirmBookingWithEmail(id, token)
+    },
+    onSuccess: async (result) => {
+      if (result.warning) {
+        toast.warning('Bokningen ar bekraftad, men kunden saknar e-postadress.')
+      } else {
+        toast.success('Bokningen är bekräftad och e-post har skickats till kunden.')
+      }
+      await invalidate()
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const selectedAdminService = useMemo(
+    () => servicesQuery.data?.find((service) => service.id === adminServiceId),
+    [adminServiceId, servicesQuery.data],
+  )
+
+  const adminSlots = useMemo(
+    () =>
+      getAvailableTimeSlots({
+        date: adminBookingDate,
+        occupancies: occupancyQuery.data ?? [],
+        openingHours: openingHoursQuery.data ?? [],
+        service: selectedAdminService,
+      }),
+    [adminBookingDate, occupancyQuery.data, openingHoursQuery.data, selectedAdminService],
+  )
+
+  useEffect(() => {
+    if (!adminSlots.some((slot) => slot.startTime === adminForm.getValues('start_time'))) {
+      adminForm.setValue('start_time', '')
+    }
+  }, [adminForm, adminSlots])
+
+  const createMutation = useMutation({
+    mutationFn: (values: BookingFormValues) => {
+      const slot = adminSlots.find((item) => item.startTime === values.start_time)
+      if (!slot) {
+        throw new Error('Vald tid ar inte langre tillganglig.')
+      }
+
+      return createAdminBooking(supabase, { ...values, end_time: slot.endTime, status: 'confirmed' })
+    },
+    onSuccess: async (_, values) => {
+      toast.success('Bokningen lades in.')
+      setSelectedDate(values.booking_date)
+      setSelectedStatus('all')
+      adminForm.reset({
+        service_id: '',
+        booking_date: values.booking_date,
+        start_time: '',
+        customer_name: '',
+        customer_phone: '',
+        customer_email: '',
+        customer_message: '',
+      })
+      await invalidate()
+      await queryClient.invalidateQueries({ queryKey: ['booking-occupancy'] })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteBooking(supabase, id),
     onSuccess: async () => {
+      setBookingToDelete(null)
       toast.success('Bokningen raderades.')
       await invalidate()
     },
@@ -80,6 +202,24 @@ export function AdminBookingsSection() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog
+        confirmLabel="Ja, radera"
+        description={
+          bookingToDelete
+            ? `${bookingToDelete.customer_name} - ${formatDateLabel(bookingToDelete.booking_date)} kl ${formatTimeLabel(bookingToDelete.start_time)}.`
+            : 'Bokningen tas bort.'
+        }
+        isLoading={deleteMutation.isPending}
+        onCancel={() => setBookingToDelete(null)}
+        onConfirm={() => {
+          if (bookingToDelete) {
+            deleteMutation.mutate(bookingToDelete.id)
+          }
+        }}
+        open={Boolean(bookingToDelete)}
+        title="Vill du radera bokningen?"
+      />
+
       <SectionHeader
         eyebrow="Bokningar"
         title="Dagens och veckans tider"
@@ -106,6 +246,110 @@ export function AdminBookingsSection() {
           </Card>
         ))}
       </div>
+
+      <Card className="overflow-hidden p-0">
+        <div className="surface-gold flex flex-col gap-4 p-6 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-copper-700">
+              <CalendarDays className="h-4 w-4" />
+              Manuell bokning
+            </div>
+            <h2 className="mt-4 text-2xl font-bold text-ink-950">Lagg in en kundbokning</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-900/62">
+              Valj behandling och datum sa visas bara tider som ar lediga enligt oppettider och befintliga bokningar.
+            </p>
+          </div>
+          <div className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-ink-950">
+            Status: Bekraftad
+          </div>
+        </div>
+
+        <form
+          className="grid gap-5 p-5 sm:p-6"
+          onSubmit={adminForm.handleSubmit((values) => createMutation.mutate(values))}
+        >
+          <input type="hidden" {...adminForm.register('start_time')} />
+
+          <div className="grid gap-4 lg:grid-cols-[1fr_220px]">
+            <Field error={adminForm.formState.errors.service_id?.message} label="Behandling">
+              <Select {...adminForm.register('service_id')}>
+                <option value="">Valj behandling</option>
+                {(servicesQuery.data ?? []).map((service) => (
+                  <option key={service.id} value={service.id}>
+                    {service.name} / {service.duration_minutes} min / {service.price} SEK
+                  </option>
+                ))}
+              </Select>
+            </Field>
+            <Field error={adminForm.formState.errors.booking_date?.message} label="Datum">
+              <Input min={minDate} type="date" {...adminForm.register('booking_date')} />
+            </Field>
+          </div>
+
+          <div>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm font-bold text-ink-950">Lediga tider</p>
+              <p className="text-xs font-semibold text-ink-900/55">{adminSlots.length} tider</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
+              {adminSlots.map((slot) => {
+                const isSelected = slot.startTime === adminStartTime
+
+                return (
+                  <button
+                    className={cn(
+                      'min-h-11 rounded-2xl border px-3 text-sm font-bold tabular-nums transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                      isSelected
+                        ? 'border-copper-600 bg-copper-600 text-white shadow-card'
+                        : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
+                    )}
+                    key={slot.startTime}
+                    onClick={() => adminForm.setValue('start_time', slot.startTime, { shouldDirty: true, shouldValidate: true })}
+                    type="button"
+                  >
+                    {slot.label}
+                  </button>
+                )
+              })}
+            </div>
+            {!adminSlots.length ? (
+              <div className="rounded-3xl border border-dashed border-salon-line bg-sand-50 p-5 text-sm leading-6 text-ink-900/62">
+                Valj behandling och datum for att se lediga tider. Fullbokade tider visas inte.
+              </div>
+            ) : null}
+            {adminForm.formState.errors.start_time ? (
+              <p className="mt-2 text-sm font-medium text-red-600">{adminForm.formState.errors.start_time.message}</p>
+            ) : null}
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field error={adminForm.formState.errors.customer_name?.message} label="Kundnamn">
+              <Input placeholder="Anna Andersson" {...adminForm.register('customer_name')} />
+            </Field>
+            <Field error={adminForm.formState.errors.customer_phone?.message} label="Telefon">
+              <Input placeholder="0701234567" {...adminForm.register('customer_phone')} />
+            </Field>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-[1fr_1.4fr]">
+            <Field error={adminForm.formState.errors.customer_email?.message} label="E-post">
+              <Input placeholder="anna@example.com" type="email" {...adminForm.register('customer_email')} />
+            </Field>
+            <Field error={adminForm.formState.errors.customer_message?.message} label="Intern notering / meddelande" hint="Valfritt">
+              <Input placeholder="Ex. kunden kommer 5 min tidigare" {...adminForm.register('customer_message')} />
+            </Field>
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-salon-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-ink-900/62">
+              Bokningen sparas som bekraftad och syns direkt i listan.
+            </p>
+            <Button disabled={createMutation.isPending || !adminSlots.length} type="submit">
+              {createMutation.isPending ? 'Sparar...' : 'Lagg in bokning'}
+            </Button>
+          </div>
+        </form>
+      </Card>
 
       <Card className="p-5 sm:p-6">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
@@ -191,9 +435,16 @@ export function AdminBookingsSection() {
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-ink-900/45">Status</p>
                   <Select
                     value={booking.status}
-                    onChange={(event) =>
-                      updateMutation.mutate({ id: booking.id, status: event.target.value as BookingStatus })
-                    }
+                    onChange={(event) => {
+                      const nextStatus = event.target.value as BookingStatus
+
+                      if (nextStatus === 'confirmed') {
+                        confirmMutation.mutate(booking.id)
+                        return
+                      }
+
+                      updateMutation.mutate({ id: booking.id, status: nextStatus })
+                    }}
                   >
                     {statuses.map((status) => (
                       <option key={status} value={status}>
@@ -202,14 +453,21 @@ export function AdminBookingsSection() {
                     ))}
                   </Select>
                 </div>
+                {booking.status !== 'confirmed' ? (
+                  <Button
+                    className="w-full"
+                    disabled={confirmMutation.isPending}
+                    onClick={() => confirmMutation.mutate(booking.id)}
+                    type="button"
+                  >
+                    <CheckCircle2 className="h-4 w-4" />
+                    {confirmMutation.isPending ? 'Bekraftar...' : 'Bekrafta bokning'}
+                  </Button>
+                ) : null}
                 <Button
                   className={cn('w-full', deleteMutation.isPending ? 'opacity-70' : null)}
                   disabled={deleteMutation.isPending}
-                  onClick={() => {
-                    if (confirm('Vill du radera bokningen?')) {
-                      deleteMutation.mutate(booking.id)
-                    }
-                  }}
+                  onClick={() => setBookingToDelete(booking)}
                   variant="danger"
                 >
                   <Trash2 className="h-4 w-4" />
