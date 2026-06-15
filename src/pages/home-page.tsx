@@ -10,6 +10,10 @@ import { cn } from '../lib/cn'
 import { env, isConfigured } from '../lib/env'
 import { getPublicSupabaseClient } from '../lib/supabase'
 import { fetchActiveGalleryImages } from '../features/gallery/gallery-api'
+import { demoReviews } from '../features/reviews/reviews-data'
+import bil1Image from '../assets/img/bil1.jpg'
+import bild2Image from '../assets/img/bild2.png'
+import bild3Image from '../assets/img/bild3.png'
 
 const fallbackImages = [
   {
@@ -26,42 +30,21 @@ const fallbackImages = [
   },
 ]
 
-const demoReviews = [
-  {
-    name: 'Sara M.',
-    quote: 'Smidig bokning och valdigt professionellt bemotande.',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
-    date: 'för 2 veckor sedan',
-  },
-  {
-    name: 'Daniel K.',
-    quote: 'Fin salong, tydliga priser och enkel onlinebokning.',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-    date: 'för 1 månad sedan',
-  },
-  {
-    name: 'Elin T.',
-    quote: 'Jag bokade min tid direkt fran mobilen. Superenkelt.',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
-    date: 'för 3 veckor sedan',
-  },
-]
-
 const curatedExperienceCards = [
   {
     title: 'Skägg och klippning',
     subtitle: 'Skarp stil med precision och detaljer',
-    image: 'https://images.unsplash.com/photo-1524993997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80',
+    image: bil1Image,
   },
   {
-    title: 'Farg och styling',
+    title: 'Damklippning',
     subtitle: 'Skonsam teknik med personligt uttryck',
-    image: 'https://images.unsplash.com/photo-1523263685509-57c1d050d19b?auto=format&fit=crop&w=900&q=80',
+    image: bild2Image,
   },
   {
     title: 'Junior klippning',
     subtitle: 'Trygg upplevelse for barn och ungdom',
-    image: 'https://images.unsplash.com/photo-1622296089863-eb7fc530daa8?auto=format&fit=crop&w=900&q=80',
+    image: bild3Image,
   },
 ]
 
@@ -256,11 +239,12 @@ export function HomePage() {
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="mb-12">
             <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Recensioner</h2>
+            <p className="mt-3 text-sm text-ink-900/65">Scrolla sidledes for att se alla recensioner.</p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-3">
             {demoReviews.map((review) => (
-              <article key={review.name} className="rounded-2xl border border-sand-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+              <article key={review.name} className="w-[320px] shrink-0 snap-start rounded-2xl border border-sand-200 bg-white p-6 shadow-sm transition hover:shadow-md sm:w-[360px]">
                 <div className="mb-4 flex gap-4">
                   <img
                     alt={review.name}
