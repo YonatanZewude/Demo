@@ -27,9 +27,24 @@ const fallbackImages = [
 ]
 
 const demoReviews = [
-  { name: 'Sara M.', quote: 'Smidig bokning och valdigt professionellt bemotande.' },
-  { name: 'Daniel K.', quote: 'Fin salong, tydliga priser och enkel onlinebokning.' },
-  { name: 'Elin T.', quote: 'Jag bokade min tid direkt fran mobilen. Superenkelt.' },
+  {
+    name: 'Sara M.',
+    quote: 'Smidig bokning och valdigt professionellt bemotande.',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
+    date: 'för 2 veckor sedan',
+  },
+  {
+    name: 'Daniel K.',
+    quote: 'Fin salong, tydliga priser och enkel onlinebokning.',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+    date: 'för 1 månad sedan',
+  },
+  {
+    name: 'Elin T.',
+    quote: 'Jag bokade min tid direkt fran mobilen. Superenkelt.',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
+    date: 'för 3 veckor sedan',
+  },
 ]
 
 const curatedExperienceCards = [
@@ -243,17 +258,29 @@ export function HomePage() {
             <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Recensioner</h2>
           </div>
 
-          <div className="grid gap-12 md:grid-cols-3 lg:gap-16">
+          <div className="grid gap-6 md:grid-cols-3">
             {demoReviews.map((review) => (
-              <div key={review.name} className="space-y-5">
-                <div className="flex gap-1">
+              <article key={review.name} className="rounded-2xl border border-sand-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+                <div className="mb-4 flex gap-4">
+                  <img
+                    alt={review.name}
+                    src={review.avatar}
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-ink-950">{review.name}</p>
+                    <p className="text-xs text-ink-900/60">{review.date}</p>
+                  </div>
+                </div>
+
+                <div className="mb-4 flex gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-ink-950 text-ink-950" />
+                    <Star key={i} className="h-4 w-4 fill-ink-950 text-ink-950" />
                   ))}
                 </div>
-                <p className="text-lg leading-relaxed text-ink-900/78">"{review.quote}"</p>
-                <p className="text-base font-semibold text-ink-950">{review.name}</p>
-              </div>
+
+                <p className="text-sm leading-relaxed text-ink-900/78">"{review.quote}"</p>
+              </article>
             ))}
           </div>
         </div>
