@@ -13,6 +13,13 @@ const links = [
   { to: '/admin/gallery', label: 'Galleri', icon: Image },
 ]
 
+const publicLinks = [
+  { to: '/', label: 'Hem', end: true },
+  { to: '/services', label: 'Tjänster' },
+  { to: '/gallery', label: 'Galleri' },
+  { to: '/contact', label: 'Kontakt' },
+]
+
 export function AdminLayout() {
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
@@ -40,6 +47,40 @@ export function AdminLayout() {
               </Button>
             </SignOutButton>
           </div>
+        </div>
+
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <nav className="flex flex-wrap items-center gap-2">
+            {publicLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                end={link.end}
+                to={link.to}
+                className={({ isActive }) =>
+                  cn(
+                    'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold transition',
+                    isActive
+                      ? 'bg-white text-ink-950'
+                      : 'bg-white/8 text-white/76 hover:bg-white/14 hover:text-white',
+                  )
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+            <NavLink
+              to="/admin"
+              className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-gold-300"
+            >
+              Admin
+            </NavLink>
+            <NavLink
+              to="/booking"
+              className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-5 py-2 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
+            >
+              Boka tid
+            </NavLink>
+          </nav>
         </div>
       </section>
 
