@@ -36,7 +36,7 @@ const curatedExperienceCards = [
   {
     title: 'Skagg och precision',
     subtitle: 'Klassisk barbering med modern finish',
-    image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
   },
   {
     title: 'Farg och styling',
@@ -215,10 +215,10 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {curatedExperienceCards.map((card) => (
-                <article key={card.title} className="overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]">
-                  <div className="aspect-[4/5] overflow-hidden">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-max">
+              {curatedExperienceCards.map((card, cardIndex) => (
+                <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]", cardIndex === 0 && "lg:row-span-2")}>
+                  <div className={cn("overflow-hidden", cardIndex === 0 ? "aspect-[4/5.5]" : "aspect-[4/5]")}>
                     <img
                       alt={card.title}
                       src={card.image}
