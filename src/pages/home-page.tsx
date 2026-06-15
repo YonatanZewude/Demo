@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
   Star,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -50,6 +52,19 @@ const curatedExperienceCards = [
 
 export function HomePage() {
   const [activeHeroIndex, setActiveHeroIndex] = useState(0)
+  const reviewsTrackRef = useRef<HTMLDivElement>(null)
+
+  const scrollReviews = (direction: 'left' | 'right') => {
+    if (!reviewsTrackRef.current) {
+      return
+    }
+
+    const amount = Math.max(280, Math.round(reviewsTrackRef.current.clientWidth * 0.75))
+    reviewsTrackRef.current.scrollBy({
+      left: direction === 'left' ? -amount : amount,
+      behavior: 'smooth',
+    })
+  }
 
   const galleryQuery = useQuery({
     enabled: isConfigured.supabase,
@@ -239,13 +254,34 @@ export function HomePage() {
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
           <div className="mb-12">
             <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Recensioner</h2>
-            <p className="mt-3 text-sm text-ink-900/65">Scrolla sidledes for att se alla recensioner.</p>
           </div>
 
-          <div className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-3">
+          <div className="mb-4 flex items-center justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => scrollReviews('left')}
+              aria-label="Scrolla recensioner vänster"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-salon-line bg-white text-ink-900/75 transition hover:bg-ink-950 hover:text-white"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollReviews('right')}
+              aria-label="Scrolla recensioner höger"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-salon-line bg-white text-ink-900/75 transition hover:bg-ink-950 hover:text-white"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div
+            ref={reviewsTrackRef}
+            className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
+          >
             {demoReviews.map((review) => (
               <article key={review.name} className="w-[320px] shrink-0 snap-start rounded-2xl border border-sand-200 bg-white p-6 shadow-sm transition hover:shadow-md sm:w-[360px]">
-                <div className="mb-4 flex gap-4">
+                <div className="mb-4 flex items-start gap-4">
                   <img
                     alt={review.name}
                     src={review.avatar}
@@ -255,6 +291,12 @@ export function HomePage() {
                     <p className="text-sm font-semibold text-ink-950">{review.name}</p>
                     <p className="text-xs text-ink-900/60">{review.date}</p>
                   </div>
+                  <img
+                    alt="Google"
+                    src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png"
+                    className="mt-0.5 h-5 w-5 shrink-0"
+                    loading="lazy"
+                  />
                 </div>
 
                 <div className="mb-4 flex gap-1">
