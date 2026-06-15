@@ -49,9 +49,9 @@ const demoReviews = [
 
 const curatedExperienceCards = [
   {
-    title: 'Skagg och precision',
-    subtitle: 'Klassisk barbering med modern finish',
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80',
+    title: 'Skägg och klippning',
+    subtitle: 'Skarp stil med precision och detaljer',
+    image: 'https://images.unsplash.com/photo-1524993997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80',
   },
   {
     title: 'Farg och styling',
@@ -230,10 +230,10 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 lg:auto-rows-max">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-max">
               {curatedExperienceCards.map((card) => (
                 <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]")}>
-                  <div className={cn("overflow-hidden", "aspect-[4/7]")}>
+                  <div className={cn("overflow-hidden", "aspect-[4/6]")}>
                     <img
                       alt={card.title}
                       src={card.image}
