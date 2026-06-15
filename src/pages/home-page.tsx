@@ -231,7 +231,7 @@ export function HomePage() {
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 lg:auto-rows-max">
-              {curatedExperienceCards.map((card, cardIndex) => (
+              {curatedExperienceCards.map((card) => (
                 <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]")}>
                   <div className={cn("overflow-hidden", "aspect-[4/7]")}>
                     <img
