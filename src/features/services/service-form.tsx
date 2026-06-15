@@ -55,7 +55,7 @@ export function ServiceForm({ initialValues, isSubmitting, onSubmit, onCancel }:
         <Input placeholder="Klippning Deluxe" {...form.register('name')} />
       </Field>
       <Field error={form.formState.errors.description?.message} label="Beskrivning">
-        <Textarea placeholder="Vad som ingar i behandlingen" {...form.register('description')} />
+        <Textarea placeholder="Beskriv vad kunden far och vem behandlingen passar for" {...form.register('description')} />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field error={form.formState.errors.price?.message} label="Pris (SEK)">
@@ -65,9 +65,9 @@ export function ServiceForm({ initialValues, isSubmitting, onSubmit, onCancel }:
           <Input min={15} step={15} type="number" {...form.register('duration_minutes', { valueAsNumber: true })} />
         </Field>
       </div>
-      <label className="flex items-center gap-3 rounded-2xl border border-salon-line bg-sand-50 px-4 py-3 text-sm font-medium text-ink-950">
-        <input className="h-4 w-4 rounded border-salon-line" type="checkbox" {...form.register('is_active')} />
-        Tjansten ar aktiv och synlig for kunder
+      <label className="flex items-center justify-between gap-4 rounded-2xl border border-salon-line bg-sand-50 px-4 py-3 text-sm font-bold text-ink-950">
+        <span>Tjansten ar aktiv och synlig for kunder</span>
+        <input className="h-5 w-5 rounded border-salon-line accent-copper-600" type="checkbox" {...form.register('is_active')} />
       </label>
       <div className="flex flex-wrap gap-3">
         <Button disabled={isSubmitting} type="submit">

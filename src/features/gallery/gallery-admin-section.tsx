@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Eye, EyeOff, Image, Trash2, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSupabaseClient } from '../../lib/supabase'
+import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
 import { SectionHeader } from '../../components/ui/section-header'
+import { useSupabaseClient } from '../../lib/supabase'
 import {
   createGalleryImage,
   deleteGalleryImage,
@@ -75,12 +76,12 @@ export function GalleryAdminSection() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Vänligen välj en bildfil')
+      alert('Valj en bildfil.')
       return
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Bilden får max vara 5MB')
+      alert('Bilden far max vara 5MB.')
       return
     }
 
@@ -91,131 +92,140 @@ export function GalleryAdminSection() {
   return (
     <div className="space-y-6">
       <SectionHeader
-        eyebrow="Admin"
-        title="Galleri"
-        description="Ladda upp bilder och publicera dem när de ska visas på gallerisidan."
+        eyebrow="Galleri"
+        title="Bildbibliotek"
+        description="Ladda upp, forhandsgranska och publicera bilder som bygger salongens visuella uttryck."
       />
 
-      <Card className="p-6">
-        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <label htmlFor="upload-image" className="cursor-pointer">
-            <div className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-ink-900/20 bg-sand-50 px-6 py-4 transition hover:border-ink-900/40 hover:bg-sand-100">
-              <Upload className="h-5 w-5 text-ink-900" />
-              <span className="text-sm font-semibold text-ink-900">
-                {uploading ? 'Laddar upp...' : 'Ladda upp bild'}
-              </span>
+      <Card className="overflow-hidden p-0">
+        <div className="surface-gold flex flex-col gap-5 p-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-copper-700">
+              <Image className="h-4 w-4" />
+              Studio media
             </div>
-            <input
-              id="upload-image"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileUpload}
-              disabled={uploading}
-            />
-          </label>
-
-          <div className="space-y-2 md:text-right">
-            <Link
-              to="/gallery"
-              className="inline-flex items-center justify-center rounded-full border border-ink-900/10 bg-white px-4 py-2 text-sm font-semibold text-ink-900 transition hover:bg-sand-50"
-            >
-              Visa gallerisidan
-            </Link>
-            <p className="text-xs text-ink-900/62">
-              Nya bilder laddas upp som utkast. Klicka på Publicera för att visa dem publikt.
+            <h2 className="mt-4 text-2xl font-bold text-ink-950">Publicera ett elegant galleri</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-900/62">
+              Nya bilder laddas upp som utkast. Publicera bara de bilder som ska synas for kunder.
             </p>
-            <p className="text-xs text-ink-900/62">Max 5MB. JPG, PNG eller WebP.</p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <label htmlFor="upload-image" className="cursor-pointer">
+              <div className="inline-flex min-h-12 items-center gap-2 rounded-full bg-copper-600 px-5 text-sm font-bold text-white transition hover:bg-copper-700">
+                <Upload className="h-5 w-5" />
+                {uploading ? 'Laddar upp...' : 'Ladda upp bild'}
+              </div>
+              <input
+                accept="image/*"
+                className="hidden"
+                disabled={uploading}
+                id="upload-image"
+                onChange={handleFileUpload}
+                type="file"
+              />
+            </label>
+            <Link
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-salon-line bg-white px-5 text-sm font-bold text-ink-950 transition hover:bg-sand-50"
+              to="/gallery"
+            >
+              Visa publikt
+            </Link>
           </div>
         </div>
 
-        {imagesQuery.isLoading && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-4/3 animate-pulse rounded-2xl bg-sand-100" />
-            ))}
-          </div>
-        )}
+        <div className="p-5 sm:p-6">
+          {imagesQuery.isLoading ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="aspect-4/3 animate-pulse rounded-3xl bg-sand-100" />
+              ))}
+            </div>
+          ) : null}
 
-        {imagesQuery.data && imagesQuery.data.length === 0 && (
-          <div className="rounded-2xl border-2 border-dashed border-ink-900/10 py-12 text-center">
-            <Image className="mx-auto h-12 w-12 text-ink-900/20" />
-            <p className="mt-4 text-sm text-ink-900/62">Inga bilder uppladdade än</p>
-          </div>
-        )}
+          {imagesQuery.data && imagesQuery.data.length === 0 ? (
+            <div className="rounded-3xl border-2 border-dashed border-ink-900/10 py-14 text-center">
+              <Image className="mx-auto h-12 w-12 text-ink-900/20" />
+              <h3 className="mt-4 text-lg font-bold text-ink-950">Inga bilder uppladdade</h3>
+              <p className="mt-2 text-sm text-ink-900/62">Ladda upp forsta bilden for att bygga galleriet.</p>
+            </div>
+          ) : null}
 
-        {imagesQuery.data && imagesQuery.data.length > 0 && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {imagesQuery.data.map((image) => (
-              <article key={image.id} className="overflow-hidden rounded-2xl border border-salon-line bg-white shadow-sm">
-                <div className="relative aspect-4/3">
-                  <img
-                    src={image.image_url}
-                    alt={image.title}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-ink-950 shadow-sm">
-                    {image.is_active ? 'Publicerad' : 'Utkast'}
-                  </div>
-                </div>
-
-                <div className="space-y-4 p-4">
-                  <div>
-                    <h3 className="line-clamp-1 text-sm font-semibold text-ink-950">{image.title}</h3>
-                    <p className="mt-1 text-xs text-ink-900/58">
-                      {image.is_active
-                        ? 'Visas på den publika gallerisidan.'
-                        : 'Syns inte publikt förrän du publicerar den.'}
-                    </p>
+          {imagesQuery.data && imagesQuery.data.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {imagesQuery.data.map((image) => (
+                <article key={image.id} className="overflow-hidden rounded-3xl border border-salon-line bg-white shadow-sm">
+                  <div className="relative aspect-4/3">
+                    <img
+                      alt={image.title}
+                      className="h-full w-full object-cover"
+                      src={image.image_url}
+                    />
+                    <div className="absolute left-3 top-3">
+                      <Badge status={image.is_active ? 'confirmed' : 'pending'}>
+                        {image.is_active ? 'Publicerad' : 'Utkast'}
+                      </Badge>
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      variant={image.is_active ? 'secondary' : 'primary'}
-                      className="flex-1"
-                      disabled={toggleActiveMutation.isPending}
-                      onClick={() =>
-                        toggleActiveMutation.mutate({
-                          id: image.id,
-                          isActive: image.is_active,
-                        })
-                      }
-                    >
-                      {image.is_active ? (
-                        <>
-                          <EyeOff className="h-4 w-4" />
-                          Dölj
-                        </>
-                      ) : (
-                        <>
-                          <Eye className="h-4 w-4" />
-                          Publicera
-                        </>
-                      )}
-                    </Button>
+                  <div className="space-y-4 p-4">
+                    <div>
+                      <h3 className="line-clamp-1 text-base font-bold text-ink-950">{image.title}</h3>
+                      <p className="mt-1 text-xs leading-5 text-ink-900/58">
+                        {image.is_active
+                          ? 'Syns pa den publika gallerisidan.'
+                          : 'Syns inte publikt forran du publicerar den.'}
+                      </p>
+                    </div>
 
-                    <Button
-                      variant="danger"
-                      className="px-3"
-                      disabled={deleteMutation.isPending}
-                      aria-label={`Ta bort ${image.title}`}
-                      onClick={() => {
-                        if (confirm('Är du säker på att du vill ta bort denna bild?')) {
-                          deleteMutation.mutate({
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        className="flex-1"
+                        disabled={toggleActiveMutation.isPending}
+                        onClick={() =>
+                          toggleActiveMutation.mutate({
                             id: image.id,
-                            image_url: image.image_url,
+                            isActive: image.is_active,
                           })
                         }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                        variant={image.is_active ? 'secondary' : 'primary'}
+                      >
+                        {image.is_active ? (
+                          <>
+                            <EyeOff className="h-4 w-4" />
+                            Dolj
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="h-4 w-4" />
+                            Publicera
+                          </>
+                        )}
+                      </Button>
+
+                      <Button
+                        aria-label={`Ta bort ${image.title}`}
+                        className="px-3"
+                        disabled={deleteMutation.isPending}
+                        onClick={() => {
+                          if (confirm('Vill du ta bort denna bild?')) {
+                            deleteMutation.mutate({
+                              id: image.id,
+                              image_url: image.image_url,
+                            })
+                          }
+                        }}
+                        variant="danger"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+                </article>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </Card>
     </div>
   )

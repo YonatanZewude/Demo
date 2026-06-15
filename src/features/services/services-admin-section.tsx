@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Clock3, Pencil, Plus, Scissors, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import { Card } from '../../components/ui/card'
-import { SectionHeader } from '../../components/ui/section-header'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
+import { Card } from '../../components/ui/card'
+import { SectionHeader } from '../../components/ui/section-header'
 import { useSupabaseClient } from '../../lib/supabase'
 import { createService, deleteService, fetchAdminServices, updateService } from './service-api'
 import { ServiceForm } from './service-form'
@@ -67,15 +67,24 @@ export function ServicesAdminSection() {
     <div className="space-y-6">
       <SectionHeader
         eyebrow="Tjanster"
-        title="Bygg salongens behandlingsmeny"
-        description="Skapa och uppdatera behandlingar med pris, behandlingstid, beskrivning och aktiv status."
+        title="Behandlingsmeny"
+        description="Skapa, prissatt och publicera salongens behandlingar med professionell presentation."
       />
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold text-ink-950">{editingService ? 'Redigera tjanst' : 'Ny tjanst'}</h2>
-          <p className="mt-2 text-sm leading-6 text-ink-900/65">Behandlingarna blir direkt tillgangliga pa bokningssidan nar de ar aktiva.</p>
-          <div className="mt-6">
+      <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+        <Card className="overflow-hidden p-0">
+          <div className="surface-gold p-6">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-ink-950 text-gold-300">
+              {editingService ? <Pencil className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+            </div>
+            <h2 className="mt-5 text-2xl font-bold text-ink-950">
+              {editingService ? 'Redigera tjanst' : 'Ny tjanst'}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-ink-900/62">
+              Aktiva behandlingar visas direkt pa bokningssidan.
+            </p>
+          </div>
+          <div className="p-6">
             <ServiceForm
               initialValues={editingService}
               isSubmitting={createMutation.isPending || updateMutation.isPending}
@@ -95,26 +104,42 @@ export function ServicesAdminSection() {
         <div className="grid gap-4">
           {services.map((service) => (
             <Card key={service.id} className="p-5">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div className="space-y-3">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-xl font-semibold text-ink-950">{service.name}</h3>
-                    <Badge status={service.is_active ? 'confirmed' : 'cancelled'}>
-                      {service.is_active ? 'Aktiv' : 'Inaktiv'}
-                    </Badge>
+                    <div className="grid h-11 w-11 place-items-center rounded-2xl bg-sand-50 text-copper-700">
+                      <Scissors className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-ink-950">{service.name}</h3>
+                      <Badge status={service.is_active ? 'confirmed' : 'cancelled'}>
+                        {service.is_active ? 'Aktiv' : 'Inaktiv'}
+                      </Badge>
+                    </div>
                   </div>
-                  <p className="max-w-2xl text-sm leading-6 text-ink-900/70">{service.description}</p>
-                  <div className="flex flex-wrap gap-3 text-sm text-ink-900/65">
-                    <span>{service.duration_minutes} min</span>
-                    <span>{service.price} SEK</span>
+                  <p className="mt-4 max-w-2xl text-sm leading-6 text-ink-900/68">{service.description}</p>
+                  <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-ink-950">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-sand-50 px-3 py-1.5">
+                      <Clock3 className="h-4 w-4 text-copper-700" />
+                      {service.duration_minutes} min
+                    </span>
+                    <span className="rounded-full bg-sand-50 px-3 py-1.5">{service.price} SEK</span>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button onClick={() => setEditingService(service)} variant="secondary">
                     <Pencil className="h-4 w-4" />
                     Redigera
                   </Button>
-                  <Button onClick={() => deleteMutation.mutate(service.id)} variant="danger">
+                  <Button
+                    disabled={deleteMutation.isPending}
+                    onClick={() => {
+                      if (confirm('Vill du radera tjansten?')) {
+                        deleteMutation.mutate(service.id)
+                      }
+                    }}
+                    variant="danger"
+                  >
                     <Trash2 className="h-4 w-4" />
                     Radera
                   </Button>
@@ -123,8 +148,12 @@ export function ServicesAdminSection() {
             </Card>
           ))}
 
+          {servicesQuery.isLoading ? <Card className="p-6 text-sm text-ink-900/65">Hamtar tjanster...</Card> : null}
+
           {!services.length && !servicesQuery.isLoading ? (
-            <Card className="p-6 text-sm text-ink-900/65">Inga tjanster finns annu. Lagg till den forsta behandlingen till vanster.</Card>
+            <Card className="p-8 text-center text-sm text-ink-900/65">
+              Inga tjanster finns annu. Lagg till den forsta behandlingen.
+            </Card>
           ) : null}
         </div>
       </div>

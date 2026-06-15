@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { CalendarDays, Clock3, Scissors } from 'lucide-react'
+import { CalendarDays, CheckCircle2, Clock3, Image, Scissors, Sparkles } from 'lucide-react'
 import { Card } from '../../components/ui/card'
 import { SectionHeader } from '../../components/ui/section-header'
 import { useSupabaseClient } from '../../lib/supabase'
@@ -14,35 +14,74 @@ export function AdminOverview() {
   const openingHoursQuery = useQuery({ queryKey: ['opening-hours'], queryFn: () => fetchOpeningHours(supabase) })
 
   const activeServices = servicesQuery.data?.filter((service) => service.is_active).length ?? 0
+  const totalServices = servicesQuery.data?.length ?? 0
   const openDays = openingHoursQuery.data?.filter((row) => row.is_open).length ?? 0
   const pendingBookings = bookingsQuery.data?.filter((booking) => booking.status === 'pending').length ?? 0
+  const confirmedBookings = bookingsQuery.data?.filter((booking) => booking.status === 'confirmed').length ?? 0
 
   return (
     <div className="space-y-6">
       <SectionHeader
-        eyebrow="Översikt"
-        title="Nyckeltal för salongens drift"
-        description="Få en snabb bild av behandlingsutbud, öppna dagar och bokningar som väntar på handläggning."
+        eyebrow="Oversikt"
+        title="Salongens drift i realtid"
+        description="Se vad som kraver uppmarksamhet och hur bokningssystemet mar just nu."
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {[
-          { title: 'Aktiva tjänster', value: activeServices, icon: Scissors },
-          { title: 'Öppna veckodagar', value: openDays, icon: Clock3 },
-          { title: 'Väntar bekräftelse', value: pendingBookings, icon: CalendarDays },
-        ].map(({ icon: Icon, title, value }) => (
-          <Card key={title} className="p-6">
-            <div className="flex items-center justify-between gap-4">
+          { title: 'Aktiva tjanster', value: activeServices, detail: `${totalServices} totalt`, icon: Scissors },
+          { title: 'Oppna dagar', value: openDays, detail: 'av 7 veckodagar', icon: Clock3 },
+          { title: 'Vantar svar', value: pendingBookings, detail: 'att bekrafta', icon: CalendarDays },
+          { title: 'Bekraftade', value: confirmedBookings, detail: 'kommande tider', icon: CheckCircle2 },
+        ].map(({ icon: Icon, title, value, detail }) => (
+          <Card key={title} className="overflow-hidden p-0">
+            <div className="flex items-start justify-between gap-4 p-5">
               <div>
-                <p className="text-sm text-ink-900/60">{title}</p>
-                <p className="mt-3 text-4xl font-semibold text-ink-950">{value}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-900/45">{title}</p>
+                <p className="mt-3 text-4xl font-bold text-ink-950">{value}</p>
+                <p className="mt-1 text-sm text-ink-900/58">{detail}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand-50 text-copper-600">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sand-50 text-copper-700">
                 <Icon className="h-5 w-5" />
               </div>
             </div>
           </Card>
         ))}
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <Card className="overflow-hidden p-0">
+          <div className="surface-gold p-6">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-ink-950 text-gold-300">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            <h2 className="mt-5 text-2xl font-bold text-ink-950">Prioritera idag</h2>
+            <p className="mt-2 text-sm leading-6 text-ink-900/62">
+              Borja med bokningar som vantar pa bekraftelse, kontrollera dagens tider och hall tjanstemenyn uppdaterad.
+            </p>
+          </div>
+          <div className="grid gap-3 p-5 md:grid-cols-3">
+            {[
+              'Bekrafta nya bokningar',
+              'Granska oppettider',
+              'Publicera starka bilder',
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-salon-line bg-white p-4 text-sm font-semibold text-ink-950">
+                {item}
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sand-50 text-copper-700">
+            <Image className="h-5 w-5" />
+          </div>
+          <h2 className="mt-5 text-xl font-bold text-ink-950">Professionell front</h2>
+          <p className="mt-2 text-sm leading-6 text-ink-900/62">
+            Adminpanelen styr kundens upplevelse: aktiva tjanster, synliga tider och galleri visas direkt publikt.
+          </p>
+        </Card>
       </div>
     </div>
   )
