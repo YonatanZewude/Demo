@@ -13,7 +13,29 @@ const links = [
 
 export function PublicLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
+  const isHomePage = location.pathname === '/'
+
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true)
+      return
+    }
+
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 24)
+    }
+
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [isHomePage])
+
+  const isHeroHeader = isHomePage && !isScrolled && !isMenuOpen
 
   useEffect(() => {
     setIsMenuOpen(false)
@@ -21,8 +43,22 @@ export function PublicLayout() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-salon-line bg-white/78 backdrop-blur-xl">
-        <div className="border-b border-salon-line/80 bg-ink-950 text-[10px] uppercase tracking-[0.28em] text-white/70">
+      <header
+        className={cn(
+          'sticky top-0 z-30 transition-colors duration-500',
+          isHeroHeader
+            ? 'border-b border-transparent bg-transparent'
+            : 'border-b border-salon-line bg-white/78 backdrop-blur-xl',
+        )}
+      >
+        <div
+          className={cn(
+            'border-b text-[10px] uppercase tracking-[0.28em]',
+            isHeroHeader
+              ? 'border-white/15 bg-black/25 text-white/75'
+              : 'border-salon-line/80 bg-ink-950 text-white/70',
+          )}
+        >
           <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
             <p className="truncate">{env.salonTagline}</p>
             <p className="hidden sm:block">Stockholm</p>
@@ -35,8 +71,22 @@ export function PublicLayout() {
               <Scissors className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <p className="truncate font-serif text-xl leading-none text-ink-950 sm:text-2xl">{env.salonName}</p>
-              <p className="hidden truncate text-xs uppercase tracking-[0.24em] text-ink-900/55 sm:block">{env.salonTagline}</p>
+              <p
+                className={cn(
+                  'truncate font-serif text-xl leading-none sm:text-2xl',
+                  isHeroHeader ? 'text-white' : 'text-ink-950',
+                )}
+              >
+                {env.salonName}
+              </p>
+              <p
+                className={cn(
+                  'hidden truncate text-xs uppercase tracking-[0.24em] sm:block',
+                  isHeroHeader ? 'text-white/65' : 'text-ink-900/55',
+                )}
+              >
+                {env.salonTagline}
+              </p>
             </div>
           </NavLink>
 
@@ -46,7 +96,12 @@ export function PublicLayout() {
                 <a
                   key={item.to}
                   href={item.to}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-ink-900/70 transition hover:bg-white hover:text-ink-950"
+                  className={cn(
+                    'rounded-full px-4 py-2 text-sm font-semibold transition',
+                    isHeroHeader
+                      ? 'text-white/80 hover:bg-white/10 hover:text-white'
+                      : 'text-ink-900/70 hover:bg-white hover:text-ink-950',
+                  )}
                 >
                   {item.label}
                 </a>
@@ -59,7 +114,9 @@ export function PublicLayout() {
                       'rounded-full px-4 py-2 text-sm font-semibold transition',
                       isActive
                         ? 'bg-ink-950 text-white shadow-[0_12px_24px_rgba(25,17,13,0.12)]'
-                        : 'text-ink-900/70 hover:bg-white hover:text-ink-950',
+                        : isHeroHeader
+                          ? 'text-white/80 hover:bg-white/10 hover:text-white'
+                          : 'text-ink-900/70 hover:bg-white hover:text-ink-950',
                     )
                   }
                 >
@@ -74,7 +131,9 @@ export function PublicLayout() {
                   'text-xs font-semibold uppercase tracking-[0.1em] transition',
                   isActive
                     ? 'text-copper-600'
-                    : 'text-ink-900/50 hover:text-copper-600',
+                    : isHeroHeader
+                      ? 'text-white/68 hover:text-gold-300'
+                      : 'text-ink-900/50 hover:text-copper-600',
                 )
               }
             >
@@ -82,7 +141,12 @@ export function PublicLayout() {
             </NavLink>
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center rounded-full bg-ink-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-900"
+              className={cn(
+                'inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white transition',
+                isHeroHeader
+                  ? 'border border-gold-300/55 bg-gold-400/20 hover:bg-gold-400/35'
+                  : 'bg-ink-950 hover:bg-ink-900',
+              )}
             >
               Boka tid
             </Link>
@@ -92,7 +156,12 @@ export function PublicLayout() {
             type="button"
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? 'Stang menyn' : 'Oppna menyn'}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-salon-line bg-white text-ink-950 transition hover:bg-sand-50 md:hidden"
+            className={cn(
+              'inline-flex h-11 w-11 items-center justify-center rounded-full border transition md:hidden',
+              isHeroHeader
+                ? 'border-white/30 bg-black/25 text-white hover:bg-black/45'
+                : 'border-salon-line bg-white text-ink-950 hover:bg-sand-50',
+            )}
             onClick={() => setIsMenuOpen((open) => !open)}
           >
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
