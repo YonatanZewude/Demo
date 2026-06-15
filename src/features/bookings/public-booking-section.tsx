@@ -141,31 +141,31 @@ function PublicBookingSectionInner() {
 
   return (
     <form
-      className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]"
+      className="grid gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_380px]"
       onSubmit={form.handleSubmit((values) => bookingMutation.mutate(values))}
     >
       <input type="hidden" {...form.register('service_id')} />
       <input type="hidden" {...form.register('start_time')} />
 
-      <div className="space-y-6">
+      <div className="space-y-5 sm:space-y-6">
         <Card className="overflow-hidden p-0">
-          <div className="surface-dark px-6 py-8 text-white sm:px-8">
-            <div className="flex flex-wrap items-start justify-between gap-6">
+          <div className="surface-dark px-5 py-6 text-white sm:px-8 sm:py-8">
+            <div className="flex flex-wrap items-start justify-between gap-4 sm:gap-6">
               <SectionHeader
                 className="max-w-2xl [&_h1]:text-white [&_p]:text-white/68 [&_span]:text-gold-300"
                 description="En smidigare bokning utan konto. Valj behandling, dag och tid direkt i flodet."
                 eyebrow="Boka tid"
                 title="Valj din behandling"
               />
-              <div className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-gold-300">
+              <div className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-gold-300 sm:px-4 sm:py-2 sm:text-sm">
                 Studio Lumi
               </div>
             </div>
           </div>
 
-          <div className="grid gap-3 p-4 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
+          <div className="grid gap-2.5 p-3 sm:grid-cols-2 sm:gap-3 sm:p-6 lg:grid-cols-3">
             {servicesQuery.isLoading ? (
-              <div className="col-span-full rounded-3xl border border-dashed border-salon-line p-6 text-sm text-ink-900/60">
+              <div className="col-span-full rounded-2xl border border-dashed border-salon-line p-4 text-sm text-ink-900/60 sm:rounded-3xl sm:p-6">
                 Hamtar behandlingar...
               </div>
             ) : null}
@@ -176,7 +176,7 @@ function PublicBookingSectionInner() {
               return (
                 <button
                   className={cn(
-                    'group min-h-48 rounded-3xl border bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-copper-600/55 hover:shadow-card focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                    'group rounded-2xl border bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-copper-600/55 hover:shadow-card focus:outline-none focus:ring-4 focus:ring-copper-600/10 sm:min-h-48 sm:rounded-3xl sm:p-5',
                     isSelected
                       ? 'border-copper-600 bg-[#fffaf0] shadow-card ring-1 ring-copper-600/25'
                       : 'border-salon-line',
@@ -188,7 +188,7 @@ function PublicBookingSectionInner() {
                   <span className="flex items-center justify-between gap-3">
                     <span
                       className={cn(
-                        'grid h-11 w-11 place-items-center rounded-2xl transition',
+                        'grid h-10 w-10 place-items-center rounded-2xl transition sm:h-11 sm:w-11',
                         isSelected ? 'bg-copper-600 text-white' : 'bg-sand-100 text-copper-700',
                       )}
                     >
@@ -198,11 +198,11 @@ function PublicBookingSectionInner() {
                       {service.price} SEK
                     </span>
                   </span>
-                  <span className="mt-5 block text-lg font-bold text-ink-950">{service.name}</span>
-                  <span className="mt-2 line-clamp-2 block text-sm leading-6 text-ink-900/62">
+                  <span className="mt-3 block text-base font-bold text-ink-950 sm:mt-5 sm:text-lg">{service.name}</span>
+                  <span className="mt-1.5 line-clamp-2 block text-sm leading-5 text-ink-900/62 sm:mt-2 sm:leading-6">
                     {service.description || 'Professionell behandling hos Studio Lumi.'}
                   </span>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-copper-700">
+                  <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-copper-700 sm:mt-5">
                     <Clock3 className="h-4 w-4" />
                     {service.duration_minutes} min
                   </span>
@@ -215,16 +215,16 @@ function PublicBookingSectionInner() {
           ) : null}
         </Card>
 
-        <Card className="p-5 sm:p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Datum</p>
-              <h2 className="mt-2 text-2xl font-bold text-ink-950">Valj en dag</h2>
+              <h2 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Valj en dag</h2>
             </div>
-            <label className="inline-flex items-center gap-3 rounded-full border border-salon-line bg-white px-4 py-2 text-sm font-semibold text-ink-950">
+            <label className="inline-flex items-center gap-2 rounded-full border border-salon-line bg-white px-3 py-2 text-sm font-semibold text-ink-950 sm:gap-3 sm:px-4">
               <CalendarDays className="h-4 w-4 text-copper-700" />
               <Input
-                className="min-h-0 w-36 border-0 bg-transparent p-0 focus:ring-0"
+                className="min-h-0 w-32 border-0 bg-transparent p-0 focus:ring-0 sm:w-36"
                 min={minDate}
                 type="date"
                 {...form.register('booking_date')}
@@ -232,7 +232,7 @@ function PublicBookingSectionInner() {
             </label>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+          <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-5 sm:grid-cols-4 lg:grid-cols-7">
             {quickDates.map((date) => {
               const value = format(date, 'yyyy-MM-dd')
               const isSelected = bookingDate === value
@@ -240,7 +240,7 @@ function PublicBookingSectionInner() {
               return (
                 <button
                   className={cn(
-                    'rounded-2xl border px-3 py-4 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                    'rounded-2xl border px-2 py-3 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10 sm:px-3 sm:py-4',
                     isSelected
                       ? 'border-copper-600 bg-ink-950 text-white shadow-card'
                       : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
@@ -262,26 +262,26 @@ function PublicBookingSectionInner() {
           ) : null}
         </Card>
 
-        <Card className="p-5 sm:p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Tid</p>
-              <h2 className="mt-2 text-2xl font-bold text-ink-950">Lediga tider</h2>
+              <h2 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Lediga tider</h2>
               <p className="mt-2 text-sm text-ink-900/60">{selectedDateLabel}</p>
             </div>
-            <div className="rounded-full bg-sand-100 px-4 py-2 text-sm font-semibold text-ink-950">
+            <div className="rounded-full bg-sand-100 px-3 py-1.5 text-sm font-semibold text-ink-950 sm:px-4 sm:py-2">
               {slots.length} tider
             </div>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+          <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-5 sm:grid-cols-4 lg:grid-cols-6">
             {slots.map((slot) => {
               const isSelected = slot.startTime === startTime
 
               return (
                 <button
                   className={cn(
-                    'min-h-12 rounded-2xl border px-3 py-3 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                    'min-h-10 rounded-2xl border px-2 py-2 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10 sm:min-h-12 sm:px-3 sm:py-3',
                     isSelected
                       ? 'border-copper-600 bg-copper-600 text-white shadow-card'
                       : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
@@ -297,7 +297,7 @@ function PublicBookingSectionInner() {
           </div>
 
           {!slots.length ? (
-            <div className="mt-5 rounded-3xl border border-dashed border-salon-line bg-sand-50 p-5 text-sm leading-6 text-ink-900/62">
+            <div className="mt-4 rounded-2xl border border-dashed border-salon-line bg-sand-50 p-4 text-sm leading-6 text-ink-900/62 sm:mt-5 sm:rounded-3xl sm:p-5">
               Valj en behandling for att se lediga tider. Om dagen ar fullbokad visas inga tider har.
             </div>
           ) : null}
@@ -306,10 +306,10 @@ function PublicBookingSectionInner() {
           ) : null}
         </Card>
 
-        <Card className="p-5 sm:p-6">
-          <div className="mb-5">
+        <Card className="p-4 sm:p-6">
+          <div className="mb-4 sm:mb-5">
             <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Kontakt</p>
-            <h2 className="mt-2 text-2xl font-bold text-ink-950">Dina uppgifter</h2>
+            <h2 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Dina uppgifter</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field error={form.formState.errors.customer_name?.message} label="Namn">
@@ -328,9 +328,34 @@ function PublicBookingSectionInner() {
             </Field>
           </div>
         </Card>
+
+        <Card className="overflow-hidden p-0 xl:hidden">
+          <div className="surface-gold p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-copper-700">Din bokning</p>
+            <div className="mt-3 grid gap-2 text-sm">
+              <div className="flex items-center justify-between gap-3 rounded-2xl bg-white/75 px-3 py-2">
+                <span className="text-ink-900/62">Behandling</span>
+                <span className="truncate font-bold text-ink-950">{selectedService?.name ?? 'Inte vald'}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="rounded-2xl bg-white/75 px-3 py-2">
+                  <span className="block text-xs text-ink-900/55">Dag</span>
+                  <span className="block truncate font-bold capitalize text-ink-950">{selectedDateLabel}</span>
+                </div>
+                <div className="rounded-2xl bg-white/75 px-3 py-2">
+                  <span className="block text-xs text-ink-900/55">Tid</span>
+                  <span className="block font-bold text-ink-950">{selectedTimeLabel}</span>
+                </div>
+              </div>
+            </div>
+            <Button className="mt-4 min-h-11 w-full text-sm" disabled={bookingMutation.isPending || !slots.length} type="submit">
+              {bookingMutation.isPending ? 'Skickar...' : 'Skicka bokning'}
+            </Button>
+          </div>
+        </Card>
       </div>
 
-      <aside className="xl:sticky xl:top-28 xl:self-start">
+      <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
         <Card className="overflow-hidden p-0">
           <div className="surface-gold p-6">
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-ink-950 text-gold-300">

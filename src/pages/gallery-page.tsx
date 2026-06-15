@@ -37,35 +37,35 @@ export function GalleryPage() {
       <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-white">
         <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:repeating-linear-gradient(170deg,transparent_0,transparent_13px,#111_14px,transparent_15px)]" />
 
-        <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 py-12 sm:px-8 sm:py-16 lg:grid-cols-[0.34fr_0.66fr] lg:px-12 lg:py-20">
+        <div className="relative mx-auto grid w-full max-w-7xl gap-6 px-5 py-8 sm:gap-10 sm:px-8 sm:py-16 lg:grid-cols-[0.34fr_0.66fr] lg:px-12 lg:py-20">
           <aside className="lg:sticky lg:top-32 lg:self-start">
-            <div className="mb-5 flex items-center gap-3">
+            <div className="mb-4 flex items-center gap-3 sm:mb-5">
               <span className="h-px w-10 bg-gold-500" />
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-copper-600">
                 Stilgalleri
               </p>
             </div>
 
-            <h1 className="font-serif text-4xl leading-[0.98] text-ink-950 sm:text-5xl lg:text-6xl">
+            <h1 className="font-serif text-3xl leading-tight text-ink-950 sm:text-5xl sm:leading-[0.98] lg:text-6xl">
               Våra kunders förvandlingar
             </h1>
 
-            <p className="mt-6 max-w-sm text-sm leading-7 text-ink-900/70 sm:text-base">
+            <p className="mt-4 max-w-sm text-sm leading-6 text-ink-900/70 sm:mt-6 sm:text-base sm:leading-7">
               Upptäck resultat från {env.salonName}. Här visas bilder som admin laddar upp,
               från klippning och styling till färg och finish.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
               <Link
                 to="/booking"
-                className="inline-flex items-center justify-center gap-2 rounded-sm border border-gold-500 bg-gold-400 px-5 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-sm border border-gold-500 bg-gold-400 px-4 py-2 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:px-5 sm:py-3"
               >
                 Boka nu
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-sm border border-ink-900/12 bg-white px-5 py-3 text-sm font-semibold text-ink-900 transition hover:bg-sand-50"
+                className="inline-flex min-h-10 items-center justify-center rounded-sm border border-ink-900/12 bg-white px-4 py-2 text-sm font-semibold text-ink-900 transition hover:bg-sand-50 sm:px-5 sm:py-3"
               >
                 Se priser
               </Link>
@@ -74,7 +74,7 @@ export function GalleryPage() {
 
           <div>
             {galleryQuery.isLoading ? (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {Array.from({ length: 12 }).map((_, index) => (
                   <div
                     key={index}
@@ -83,7 +83,7 @@ export function GalleryPage() {
                 ))}
               </div>
             ) : images.length > 0 ? (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {images.map((image, index) => (
                   <article
                     key={`${image.image_url}-${index}`}
@@ -106,7 +106,7 @@ export function GalleryPage() {
                 ))}
               </div>
             ) : (
-              <div className="flex min-h-[420px] flex-col items-center justify-center border border-dashed border-ink-900/16 bg-sand-50/70 px-6 text-center">
+              <div className="flex min-h-[260px] flex-col items-center justify-center border border-dashed border-ink-900/16 bg-sand-50/70 px-5 text-center sm:min-h-[420px] sm:px-6">
                 <Images className="h-12 w-12 text-copper-600" />
                 <h2 className="mt-5 font-serif text-3xl text-ink-950">
                   Galleriet är snart här

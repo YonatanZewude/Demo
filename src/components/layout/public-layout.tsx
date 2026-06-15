@@ -66,19 +66,19 @@ export function PublicLayout() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-salon-line bg-white/88 shadow-[0_14px_36px_rgba(17,17,17,0.08)] backdrop-blur-xl">
         <div className="border-b border-salon-line/80 bg-ink-950 text-[10px] uppercase tracking-[0.28em] text-white/70">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-1.5 sm:px-6 sm:py-2 lg:px-8">
             <p className="truncate">{env.salonTagline}</p>
             <p className="hidden sm:block">Stockholm</p>
           </div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <NavLink className="flex min-w-0 items-center gap-3" to="/">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#bd8740,#994422)] text-white shadow-[0_12px_26px_rgba(153,68,34,0.2)] sm:h-12 sm:w-12">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#bd8740,#994422)] text-white shadow-[0_12px_26px_rgba(153,68,34,0.2)] sm:h-12 sm:w-12">
               <Scissors className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <p className="truncate font-serif text-xl leading-none text-ink-950 sm:text-2xl">{env.salonName}</p>
+              <p className="truncate font-serif text-lg leading-none text-ink-950 sm:text-2xl">{env.salonName}</p>
               <p className="hidden truncate text-xs uppercase tracking-[0.24em] text-ink-900/55 sm:block">{env.salonTagline}</p>
             </div>
           </NavLink>
@@ -113,7 +113,7 @@ export function PublicLayout() {
             type="button"
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? 'Stäng menyn' : 'Öppna menyn'}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-salon-line bg-white text-ink-950 transition hover:bg-sand-50 md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-salon-line bg-white text-ink-950 transition hover:bg-sand-50 md:hidden"
             onClick={() => setIsMenuOpen((open) => !open)}
           >
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

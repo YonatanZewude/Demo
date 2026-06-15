@@ -122,28 +122,28 @@ export function HomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(201,162,39,0.18),transparent_42%),linear-gradient(90deg,rgba(7,7,7,0.74),rgba(7,7,7,0.46)_45%,rgba(7,7,7,0.7))]" />
         </div>
 
-        <div className="relative mx-auto flex min-h-[75vh] max-w-7xl items-end px-6 pb-14 pt-24 sm:px-8 sm:pb-20 sm:pt-28 lg:min-h-[82vh] lg:px-12 lg:pb-24">
-          <div className="max-w-3xl space-y-6 text-white sm:space-y-7">
+        <div className="relative mx-auto flex min-h-[62vh] max-w-7xl items-end px-5 pb-10 pt-20 sm:min-h-[75vh] sm:px-8 sm:pb-20 sm:pt-28 lg:min-h-[82vh] lg:px-12 lg:pb-24">
+          <div className="max-w-3xl space-y-4 text-white sm:space-y-7">
             <p className="text-xs font-semibold uppercase tracking-[0.36em] text-gold-300/90 sm:text-sm">
               Signaturstil med precision och personlighet
             </p>
 
-            <h1 className="font-serif text-4xl leading-[1.02] tracking-[0.01em] text-white sm:text-5xl lg:text-7xl">
+            <h1 className="font-serif text-3xl leading-tight tracking-[0.01em] text-white sm:text-5xl sm:leading-[1.02] lg:text-7xl">
               {env.salonHeroTitle}
             </h1>
 
-            <p className="max-w-2xl text-base leading-relaxed text-white/86 sm:text-xl">
+            <p className="max-w-2xl text-sm leading-6 text-white/86 sm:text-xl sm:leading-relaxed">
               {env.salonHeroDescription}
             </p>
 
-            <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center">
-              <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-8 py-4 text-base font-semibold text-ink-950 transition hover:bg-gold-500">
+            <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4 sm:pt-2">
+              <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:px-8 sm:py-4 sm:text-base">
                 Boka tid
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 text-base font-semibold text-white transition hover:bg-white/10"
+                className="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10 sm:px-8 sm:py-4 sm:text-base"
               >
                 Se alla tjänster
               </Link>
@@ -168,21 +168,21 @@ export function HomePage() {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="bg-sand-50/40 py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <div className="mb-12 text-center">
-            <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Professionell hårvård</h2>
-            <p className="mt-4 text-lg leading-relaxed text-ink-900/68">
+      <section id="gallery" className="bg-sand-50/40 py-10 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+          <div className="mb-6 text-center sm:mb-12">
+            <h2 className="font-serif text-3xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Professionell hårvård</h2>
+            <p className="mt-3 text-sm leading-6 text-ink-900/68 sm:mt-4 sm:text-lg sm:leading-relaxed">
               Vi skapar moderna frisyrer i en stilren och lugn miljö
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-3 sm:gap-6 md:grid-cols-2">
             {galleryImages.map((item, index) => (
               <div 
                 key={item.title} 
                 className={`relative overflow-hidden rounded-3xl ${
-                  index === 0 ? 'md:col-span-2 aspect-21/9' : 'aspect-4/3'
+                  index === 0 ? 'aspect-4/3 md:col-span-2 md:aspect-21/9' : 'aspect-4/3'
                 }`}
               >
                 <img alt={item.title} className="h-full w-full object-cover" src={item.image} />
@@ -190,12 +190,12 @@ export function HomePage() {
             ))}
           </div>
 
-          <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-8 py-4 text-base font-semibold text-ink-950 transition hover:bg-gold-500">
+          <div className="mt-7 flex flex-col items-center gap-3 sm:mt-12 sm:flex-row sm:justify-center sm:gap-4">
+            <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:px-8 sm:py-4 sm:text-base">
               Boka tid
               <ArrowRight className="h-5 w-5" />
             </Link>
-            <Link to="/services" className="inline-flex items-center justify-center rounded-full border border-ink-900/10 px-8 py-4 text-base font-semibold text-ink-900 transition hover:bg-sand-50">
+            <Link to="/services" className="inline-flex items-center justify-center rounded-full border border-ink-900/10 px-6 py-3 text-sm font-semibold text-ink-900 transition hover:bg-sand-50 sm:px-8 sm:py-4 sm:text-base">
               Se priser
             </Link>
           </div>
@@ -203,20 +203,20 @@ export function HomePage() {
       </section>
 
       {/* Signature Services */}
-      <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-[linear-gradient(140deg,#07090d_0%,#0d1118_48%,#141b24_100%)] py-16 text-white sm:py-20 lg:py-24">
+      <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-[linear-gradient(140deg,#07090d_0%,#0d1118_48%,#141b24_100%)] py-12 text-white sm:py-20 lg:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.2),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(99,133,168,0.14),transparent_35%)]" />
 
-        <div className="relative mx-auto flex min-h-[68vh] max-w-7xl items-center px-6 sm:min-h-[72vh] sm:px-8 lg:min-h-[76vh] lg:px-12">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
-            <div className="space-y-6">
+        <div className="relative mx-auto flex max-w-7xl items-center px-5 sm:min-h-[72vh] sm:px-8 lg:min-h-[76vh] lg:px-12">
+          <div className="grid gap-7 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+            <div className="space-y-4 sm:space-y-6">
               <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-gold-300/90">
                 <span className="h-px w-8 bg-gold-300/70" />
                 Skräddarsytt för din stil
               </p>
-              <h2 className="font-serif text-4xl leading-tight text-white sm:text-5xl">
+              <h2 className="font-serif text-3xl leading-tight text-white sm:text-5xl">
                 Mer än en klippning, en helhetsupplevelse
               </h2>
-              <p className="max-w-xl text-base leading-relaxed text-white/74 sm:text-lg">
+              <p className="max-w-xl text-sm leading-6 text-white/74 sm:text-lg sm:leading-relaxed">
                 Oavsett om du vill ha en skarp fade, en mjuk färgövergång eller barnklippning med lugn hand,
                 formar vi behandlingen efter dig. Varje metod bygger på precision, tempo och detaljer som håller.
               </p>
@@ -228,7 +228,7 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-max">
+            <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:auto-rows-max">
               {curatedExperienceCards.map((card) => (
                 <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]")}>
                   <div className={cn("overflow-hidden", "aspect-square sm:aspect-[4/6]")}>
@@ -238,8 +238,8 @@ export function HomePage() {
                       className="h-full w-full object-cover transition duration-700 hover:scale-105"
                     />
                   </div>
-                  <div className="space-y-2 px-5 py-5">
-                    <h3 className="font-serif text-3xl leading-[1.04] text-ink-950">{card.title}</h3>
+                  <div className="space-y-1.5 px-4 py-4 sm:space-y-2 sm:px-5 sm:py-5">
+                    <h3 className="font-serif text-2xl leading-tight text-ink-950 sm:text-3xl sm:leading-[1.04]">{card.title}</h3>
                     <p className="text-sm leading-6 text-ink-900/66">{card.subtitle}</p>
                   </div>
                 </article>
@@ -250,10 +250,10 @@ export function HomePage() {
       </section>
 
       {/* Reviews Section */}
-      <section className="bg-sand-50/40 py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <div className="mb-12">
-            <h2 className="font-serif text-4xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Recensioner</h2>
+      <section className="bg-sand-50/40 py-10 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+          <div className="mb-6 sm:mb-12">
+            <h2 className="font-serif text-3xl leading-tight tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">Recensioner</h2>
           </div>
 
           <div className="mb-4 flex items-center justify-end gap-3">
@@ -277,10 +277,10 @@ export function HomePage() {
 
           <div
             ref={reviewsTrackRef}
-            className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
+            className="-mx-2 flex snap-x snap-mandatory gap-3 overflow-x-auto px-2 pb-3 [scrollbar-width:none] [-ms-overflow-style:none] sm:gap-6 [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
           >
             {demoReviews.map((review) => (
-              <article key={review.name} className="w-[320px] shrink-0 snap-start rounded-2xl border border-sand-200 bg-white p-6 shadow-sm transition hover:shadow-md sm:w-[360px]">
+              <article key={review.name} className="w-[82vw] shrink-0 snap-start rounded-2xl border border-sand-200 bg-white p-4 shadow-sm transition hover:shadow-md sm:w-[360px] sm:p-6">
                 <div className="mb-4 flex items-start gap-4">
                   <img
                     alt={review.name}

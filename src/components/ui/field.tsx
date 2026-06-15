@@ -23,7 +23,7 @@ export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       className={cn(
-        'min-h-12 rounded-2xl border border-salon-line bg-white px-4 py-3 text-sm text-ink-950 outline-none transition placeholder:text-ink-900/35 focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10',
+        'min-h-11 rounded-2xl border border-salon-line bg-white px-4 py-2.5 text-sm text-ink-950 outline-none transition placeholder:text-ink-900/35 focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10 sm:min-h-12 sm:py-3',
         props.className,
       )}
       {...props}
@@ -35,7 +35,7 @@ export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       className={cn(
-        'min-h-12 rounded-2xl border border-salon-line bg-white px-4 py-3 text-sm text-ink-950 outline-none transition focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10',
+        'min-h-11 rounded-2xl border border-salon-line bg-white px-4 py-2.5 text-sm text-ink-950 outline-none transition focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10 sm:min-h-12 sm:py-3',
         props.className,
       )}
       {...props}
@@ -66,7 +66,7 @@ export function Textarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       className={cn(
-        'min-h-28 rounded-2xl border border-salon-line bg-white px-4 py-3 text-sm text-ink-950 outline-none transition placeholder:text-ink-900/35 focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10',
+        'min-h-24 rounded-2xl border border-salon-line bg-white px-4 py-2.5 text-sm text-ink-950 outline-none transition placeholder:text-ink-900/35 focus:border-copper-600 focus:ring-4 focus:ring-copper-600/10 sm:min-h-28 sm:py-3',
         props.className,
       )}
       {...props}

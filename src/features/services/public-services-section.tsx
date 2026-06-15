@@ -12,8 +12,8 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
   const hasServices = services.length > 0
 
   return (
-    <div className="space-y-8">
-      <section className="surface-panel surface-hero gold-ring px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+    <div className="space-y-5 sm:space-y-8">
+      <section className="surface-panel surface-hero gold-ring px-5 py-6 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
         <div>
           <SectionHeader
             eyebrow="Tjanster"
@@ -24,11 +24,11 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
       </section>
 
       {isLoading ? (
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 xl:grid-cols-2">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Card key={index} className="p-5 sm:p-6">
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-sand-100" />
+            <Card key={index} className="p-4 sm:p-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="h-10 w-10 rounded-2xl bg-sand-100 sm:h-12 sm:w-12" />
                 <div className="min-w-0 flex-1">
                   <div className="h-6 w-2/3 rounded-full bg-sand-100" />
                   <div className="mt-3 h-4 w-24 rounded-full bg-sand-100" />
@@ -40,30 +40,30 @@ function PublicServicesSectionContent({ services, isLoading }: { services: Displ
           ))}
         </div>
       ) : (
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 xl:grid-cols-2">
           {services.map((service) => (
-            <Card key={service.id} className="p-5 sm:p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sand-50 text-copper-600">
-                  <Tag className="h-5 w-5" />
+            <Card key={service.id} className="p-4 sm:p-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-sand-50 text-copper-600 sm:h-12 sm:w-12">
+                  <Tag className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0">
-                      <h2 className="truncate text-xl font-semibold text-ink-950 sm:text-2xl">{service.name}</h2>
-                      <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-ink-900/62">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-sand-50 px-3 py-1.5 font-medium text-ink-900/75">
+                      <h2 className="text-lg font-semibold text-ink-950 sm:text-2xl">{service.name}</h2>
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-ink-900/62 sm:gap-3">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-sand-50 px-2.5 py-1 font-medium text-ink-900/75 sm:gap-2 sm:px-3 sm:py-1.5">
                           <Clock3 className="h-4 w-4 text-copper-600" />
                           {service.durationLabel}
                         </span>
                         <span className="text-base font-semibold text-ink-950">{service.priceLabel}</span>
                       </div>
                     </div>
-                    <Link to="/booking" className="inline-flex shrink-0 items-center justify-center rounded-xl border border-gold-500 bg-gold-400 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500">
+                    <Link to="/booking" className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-xl border border-gold-500 bg-gold-400 px-4 py-2 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:py-2.5">
                       Boka
                     </Link>
                   </div>
-                  <p className="mt-4 text-sm leading-7 text-ink-900/70">{service.description}</p>
+                  <p className="mt-3 text-sm leading-6 text-ink-900/70 sm:mt-4 sm:leading-7">{service.description}</p>
                 </div>
               </div>
             </Card>
