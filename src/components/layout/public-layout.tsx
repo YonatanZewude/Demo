@@ -7,7 +7,7 @@ import { cn } from '../../lib/cn'
 
 const links = [
   { to: '/', label: 'Hem' },
-  { to: '/services', label: 'Tjanster' },
+  { to: '/services', label: 'Tjänster' },
   { to: '/gallery', label: 'Galleri' },
   { to: '/contact', label: 'Kontakt' },
 ]
@@ -112,7 +112,7 @@ export function PublicLayout() {
           <button
             type="button"
             aria-expanded={isMenuOpen}
-            aria-label={isMenuOpen ? 'Stang menyn' : 'Oppna menyn'}
+            aria-label={isMenuOpen ? 'Stäng menyn' : 'Öppna menyn'}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-salon-line bg-white text-ink-950 transition hover:bg-sand-50 md:hidden"
             onClick={() => setIsMenuOpen((open) => !open)}
           >
@@ -169,15 +169,15 @@ export function PublicLayout() {
             </div>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Oppettider</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Öppettider</p>
             <p className="mt-4 inline-flex items-center gap-2 text-sm text-ink-900/68">
               <Sparkles className="h-4 w-4 text-copper-600" />
               Man-Fre 10:00-18:00
             </p>
-            <p className="mt-2 text-sm text-ink-900/68">Lor 10:00-15:00</p>
+            <p className="mt-2 text-sm text-ink-900/68">Lör 10:00-15:00</p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Folj oss</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-copper-600">Följ oss</p>
             <div className="mt-4 flex gap-3">
               {env.salonInstagramUrl && (
                 <a 

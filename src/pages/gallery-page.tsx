@@ -15,10 +15,10 @@ const previewImages = [
   { title: 'Glansig styling', image_url: bild3Image },
   { title: 'Formad fade', image_url: bild2Image },
   { title: 'Naturliga slingor', image_url: bil1Image },
-  { title: 'Farg och finish', image_url: bild3Image },
+  { title: 'Färg och finish', image_url: bild3Image },
   { title: 'Texturerad klippning', image_url: bil1Image },
   { title: 'Kort skarp profil', image_url: bild2Image },
-  { title: 'Lang styling', image_url: bild3Image },
+  { title: 'Lång styling', image_url: bild3Image },
 ]
 
 export function GalleryPage() {
@@ -47,12 +47,12 @@ export function GalleryPage() {
             </div>
 
             <h1 className="font-serif text-4xl leading-[0.98] text-ink-950 sm:text-5xl lg:text-6xl">
-              Vara kunders forvandlingar
+              Våra kunders förvandlingar
             </h1>
 
             <p className="mt-6 max-w-sm text-sm leading-7 text-ink-900/70 sm:text-base">
-              Upptack resultat fran {env.salonName}. Har visas bilder som admin laddar upp,
-              fran klippning och styling till farg och finish.
+              Upptäck resultat från {env.salonName}. Här visas bilder som admin laddar upp,
+              från klippning och styling till färg och finish.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -109,10 +109,10 @@ export function GalleryPage() {
               <div className="flex min-h-[420px] flex-col items-center justify-center border border-dashed border-ink-900/16 bg-sand-50/70 px-6 text-center">
                 <Images className="h-12 w-12 text-copper-600" />
                 <h2 className="mt-5 font-serif text-3xl text-ink-950">
-                  Galleriet ar snart har
+                  Galleriet är snart här
                 </h2>
                 <p className="mt-3 max-w-md text-sm leading-7 text-ink-900/64">
-                  Nar admin laddar upp aktiva bilder visas de automatiskt pa den har sidan.
+                  När admin laddar upp aktiva bilder visas de automatiskt på den här sidan.
                 </p>
               </div>
             )}

@@ -45,7 +45,7 @@ const curatedExperienceCards = [
   },
   {
     title: 'Junior klippning',
-    subtitle: 'Trygg upplevelse for barn och ungdom',
+    subtitle: 'Trygg upplevelse för barn och ungdom',
     image: bild3Image,
   },
 ]
@@ -145,7 +145,7 @@ export function HomePage() {
                 to="/services"
                 className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 text-base font-semibold text-white transition hover:bg-white/10"
               >
-                Se alla tjanster
+                Se alla tjänster
               </Link>
             </div>
 
@@ -211,20 +211,20 @@ export function HomePage() {
             <div className="space-y-6">
               <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-gold-300/90">
                 <span className="h-px w-8 bg-gold-300/70" />
-                Skraddarsytt for din stil
+                Skräddarsytt för din stil
               </p>
               <h2 className="font-serif text-4xl leading-tight text-white sm:text-5xl">
-                Mer an en klippning, en helhetsupplevelse
+                Mer än en klippning, en helhetsupplevelse
               </h2>
               <p className="max-w-xl text-base leading-relaxed text-white/74 sm:text-lg">
-                Oavsett om du vill ha en skarp fade, en mjuk fargovergang eller barnklippning med lugn hand,
-                formar vi behandlingen efter dig. Var metod bygger pa precision, tempo och detaljer som haller.
+                Oavsett om du vill ha en skarp fade, en mjuk färgövergång eller barnklippning med lugn hand,
+                formar vi behandlingen efter dig. Varje metod bygger på precision, tempo och detaljer som håller.
               </p>
               <Link
                 to="/services"
                 className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
               >
-                Upptack behandlingar
+                Upptäck behandlingar
               </Link>
             </div>
 
