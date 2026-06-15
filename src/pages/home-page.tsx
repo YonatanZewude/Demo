@@ -230,10 +230,10 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-max">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 lg:auto-rows-max">
               {curatedExperienceCards.map((card, cardIndex) => (
-                <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]", cardIndex === 0 && "lg:row-span-2")}>
-                  <div className={cn("overflow-hidden", cardIndex === 0 ? "aspect-[4/5.5]" : "aspect-[4/5]")}>
+                <article key={card.title} className={cn("overflow-hidden rounded-2xl border border-white/12 bg-white/95 text-ink-950 shadow-[0_20px_44px_rgba(1,3,7,0.35)]")}>
+                  <div className={cn("overflow-hidden", "aspect-[4/7]")}>
                     <img
                       alt={card.title}
                       src={card.image}
@@ -275,7 +275,7 @@ export function HomePage() {
 
                 <div className="mb-4 flex gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-ink-950 text-ink-950" />
+                    <Star key={i} className="h-4 w-4 fill-gold-400 text-gold-400" />
                   ))}
                 </div>
 
