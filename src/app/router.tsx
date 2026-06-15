@@ -9,6 +9,7 @@ import { AdminOpeningHoursPage } from '../pages/admin-opening-hours-page'
 import { AdminServicesPage } from '../pages/admin-services-page'
 import { BookingPage } from '../pages/booking-page'
 import { ContactPage } from '../pages/contact-page'
+import { GalleryPage } from '../pages/gallery-page'
 import { HomePage } from '../pages/home-page'
 import { NotFoundPage } from '../pages/not-found-page'
 import { ServicesPage } from '../pages/services-page'
@@ -20,6 +21,7 @@ export function AppRouter() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Route>

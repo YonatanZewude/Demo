@@ -8,7 +8,7 @@ import { cn } from '../../lib/cn'
 const links = [
   { to: '/', label: 'Hem' },
   { to: '/services', label: 'Tjanster' },
-  { to: '/#gallery', label: 'Galleri', isHash: true },
+  { to: '/gallery', label: 'Galleri' },
   { to: '/contact', label: 'Kontakt' },
 ]
 
@@ -85,30 +85,20 @@ export function PublicLayout() {
 
           <nav className="hidden items-center gap-2 md:flex">
             {links.map((item) => (
-              item.isHash ? (
-                <a
-                  key={item.to}
-                  href={item.to}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-ink-900/70 transition hover:bg-white hover:text-ink-950"
-                >
-                  {item.label}
-                </a>
-              ) : (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    cn(
-                      'rounded-full px-4 py-2 text-sm font-semibold transition',
-                      isActive
-                        ? 'bg-ink-950 text-white shadow-[0_12px_24px_rgba(25,17,13,0.12)]'
-                        : 'text-ink-900/70 hover:bg-white hover:text-ink-950',
-                    )
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              )
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    'rounded-full px-4 py-2 text-sm font-semibold transition',
+                    isActive
+                      ? 'bg-ink-950 text-white shadow-[0_12px_24px_rgba(25,17,13,0.12)]'
+                      : 'text-ink-900/70 hover:bg-white hover:text-ink-950',
+                  )
+                }
+              >
+                {item.label}
+              </NavLink>
             ))}
             <AdminMenuLink />
             <Link
@@ -134,30 +124,20 @@ export function PublicLayout() {
           <div className="border-t border-salon-line bg-white/92 px-4 py-4 shadow-[0_18px_40px_rgba(17,17,17,0.08)] backdrop-blur md:hidden sm:px-6">
             <nav className="mx-auto grid w-full max-w-7xl gap-2">
               {links.map((item) => (
-                item.isHash ? (
-                  <a
-                    key={item.to}
-                    href={item.to}
-                    className="rounded-2xl border border-salon-line bg-white px-4 py-3 text-sm font-semibold text-ink-900/75 transition hover:bg-sand-50 hover:text-ink-950"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={({ isActive }) =>
-                      cn(
-                        'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
-                        isActive
-                          ? 'border-transparent bg-ink-950 text-white'
-                          : 'border-salon-line bg-white text-ink-900/75 hover:bg-sand-50 hover:text-ink-950',
-                      )
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                )
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    cn(
+                      'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
+                      isActive
+                        ? 'border-transparent bg-ink-950 text-white'
+                        : 'border-salon-line bg-white text-ink-900/75 hover:bg-sand-50 hover:text-ink-950',
+                    )
+                  }
+                >
+                  {item.label}
+                </NavLink>
               ))}
               <Link
                 to="/booking"
