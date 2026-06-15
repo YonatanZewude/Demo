@@ -46,7 +46,7 @@ const curatedExperienceCards = [
   {
     title: 'Junior klippning',
     subtitle: 'Trygg upplevelse for barn och ungdom',
-    image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1622296089863-eb7fc530daa8?auto=format&fit=crop&w=900&q=80',
   },
 ]
 
@@ -190,10 +190,10 @@ export function HomePage() {
       </section>
 
       {/* Signature Services */}
-      <section className="relative overflow-hidden bg-[linear-gradient(140deg,#07090d_0%,#0d1118_48%,#141b24_100%)] py-14 text-white sm:py-16 lg:py-20">
+      <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-[linear-gradient(140deg,#07090d_0%,#0d1118_48%,#141b24_100%)] py-16 text-white sm:py-20 lg:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.2),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(99,133,168,0.14),transparent_35%)]" />
 
-        <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+        <div className="relative mx-auto flex min-h-[68vh] max-w-7xl items-center px-6 sm:min-h-[72vh] sm:px-8 lg:min-h-[76vh] lg:px-12">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
             <div className="space-y-6">
               <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-gold-300/90">
