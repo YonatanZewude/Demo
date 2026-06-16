@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { SetupNotice } from '../../components/shared/setup-notice'
 import { Button } from '../../components/ui/button'
@@ -57,7 +58,9 @@ function formatLongDate(value: string) {
 
 function PublicBookingSectionInner() {
   const supabase = getPublicSupabaseClient()
+  const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [step, setStep] = useState<BookingStep>('time')
 
   const servicesQuery = useQuery({
@@ -147,8 +150,8 @@ function PublicBookingSectionInner() {
       return createBooking(supabase, { ...values, end_time: slot.endTime })
     },
     onSuccess: () => {
-      toast.success('Bokningen skapades. Bekraftelse skickas via e-post.')
       setIsModalOpen(false)
+      setIsSuccessModalOpen(true)
       setStep('time')
       form.reset({
         service_id: '',
@@ -184,6 +187,11 @@ function PublicBookingSectionInner() {
     if (isValid) {
       setStep('summary')
     }
+  }
+
+  const handleSuccessConfirm = () => {
+    setIsSuccessModalOpen(false)
+    navigate('/')
   }
 
   return (
@@ -525,6 +533,23 @@ function PublicBookingSectionInner() {
                 ) : null}
               </div>
             </form>
+          </div>
+        </div>
+      ) : null}
+
+      {isSuccessModalOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/45 px-4 py-6 backdrop-blur-sm">
+          <div className="w-full max-w-md overflow-hidden rounded-[28px] bg-white shadow-soft">
+            <div className="surface-gold p-6 text-center sm:p-8">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-ink-950 text-gold-300">
+                <Check className="h-7 w-7" />
+              </div>
+              <h2 className="mt-5 text-2xl font-bold text-ink-950">Bokningen skapades</h2>
+              <p className="mt-3 text-sm leading-6 text-ink-900/62">Bekraftelse skickas via e-post.</p>
+              <Button className="mt-6 min-h-12 w-full text-base" onClick={handleSuccessConfirm} type="button">
+                OK
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}
