@@ -75,9 +75,14 @@ export async function uploadGalleryImage(
   supabase: SupabaseClient<Database>,
   file: File
 ): Promise<string> {
-  const fileExt = file.name.split('.').pop()
-  const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
-  const filePath = `${fileName}`
+  const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const safeName = file.name
+    .replace(/\.[^/.]+$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+  const fileName = `${Date.now()}-${safeName || 'gallery-image'}-${crypto.randomUUID()}.${fileExt}`
+  const filePath = `uploads/${fileName}`
 
   const { error: uploadError } = await supabase.storage
     .from('gallery')
@@ -99,11 +104,10 @@ export async function deleteStorageImage(
   supabase: SupabaseClient<Database>,
   imageUrl: string
 ): Promise<void> {
-  // Extract file path from URL
   const urlParts = imageUrl.split('/gallery/')
   if (urlParts.length < 2) return
 
-  const filePath = urlParts[1]
+  const filePath = decodeURIComponent(urlParts[1].split('?')[0])
   
   const { error } = await supabase.storage
     .from('gallery')

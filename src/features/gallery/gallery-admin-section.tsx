@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Eye, EyeOff, Image, Trash2, Upload } from 'lucide-react'
+import { EyeOff, Image, Send, Trash2, Upload } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -48,15 +48,23 @@ export function GalleryAdminSection() {
     },
     onSuccess: () => {
       setImageToDelete(null)
+      toast.success('Bilden laddades upp som utkast.')
       queryClient.invalidateQueries({ queryKey: ['gallery'] })
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Kunde inte ladda upp bilden.')
     },
   })
 
   const toggleActiveMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
       updateGalleryImage(supabase, id, { is_active: !isActive }),
-    onSuccess: () => {
+    onSuccess: (image) => {
+      toast.success(image.is_active ? 'Bilden ar delad i galleriet.' : 'Bilden ar dold fran galleriet.')
       queryClient.invalidateQueries({ queryKey: ['gallery'] })
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Kunde inte uppdatera bilden.')
     },
   })
 
@@ -71,7 +79,12 @@ export function GalleryAdminSection() {
       }
     },
     onSuccess: () => {
+      setImageToDelete(null)
+      toast.success('Bilden togs bort.')
       queryClient.invalidateQueries({ queryKey: ['gallery'] })
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Kunde inte ta bort bilden.')
     },
   })
 
@@ -131,7 +144,7 @@ export function GalleryAdminSection() {
             </div>
             <h2 className="mt-4 text-2xl font-bold text-ink-950">Publicera ett elegant galleri</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-900/62">
-              Nya bilder laddas upp som utkast. Publicera bara de bilder som ska synas for kunder.
+              Nya bilder sparas i Supabase-bucketen gallery som utkast. Klicka Dela nar bilden ska visas for kunder.
             </p>
           </div>
 
@@ -188,7 +201,7 @@ export function GalleryAdminSection() {
                     />
                     <div className="absolute left-3 top-3">
                       <Badge status={image.is_active ? 'confirmed' : 'pending'}>
-                        {image.is_active ? 'Publicerad' : 'Utkast'}
+                        {image.is_active ? 'Delad' : 'Utkast'}
                       </Badge>
                     </div>
                   </div>
@@ -199,7 +212,7 @@ export function GalleryAdminSection() {
                       <p className="mt-1 text-xs leading-5 text-ink-900/58">
                         {image.is_active
                           ? 'Syns pa den publika gallerisidan.'
-                          : 'Syns inte publikt forran du publicerar den.'}
+                          : 'Syns inte publikt forran du delar den.'}
                       </p>
                     </div>
 
@@ -222,8 +235,8 @@ export function GalleryAdminSection() {
                           </>
                         ) : (
                           <>
-                            <Eye className="h-4 w-4" />
-                            Publicera
+                            <Send className="h-4 w-4" />
+                            Dela
                           </>
                         )}
                       </Button>
