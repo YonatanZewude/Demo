@@ -6,6 +6,7 @@ import {
   Star,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { InstallAppButton } from '../components/pwa/install-app-button'
 import { PageShell } from '../components/shell/page-shell'
 import { cn } from '../lib/cn'
 import { env } from '../lib/env'
@@ -125,6 +126,7 @@ export function HomePage() {
               >
                 Se alla tjänster
               </Link>
+              <InstallAppButton />
             </div>
 
             <div className="flex items-center gap-3 pt-4">

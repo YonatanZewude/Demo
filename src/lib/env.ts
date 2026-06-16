@@ -11,10 +11,10 @@ export const env = {
   salonHeroLabel: import.meta.env.VITE_SALON_HERO_LABEL ?? import.meta.env.VITE_SALON_NAME ?? 'Studio Lumi',
   salonHeroTitle:
     import.meta.env.VITE_SALON_HERO_TITLE ??
-    'En lugn och professionell salongsupplevelse, från första klick till färdig behandling.',
+    'Boka din nästa behandling enkelt.',
   salonHeroDescription:
     import.meta.env.VITE_SALON_HERO_DESCRIPTION ??
-    'En modern skönhetssalong med tydliga behandlingar, enkel bokning och ett personligt bemötande. Se tjänster, hitta lediga tider och boka direkt utan konto.',
+    'Se tjänster, välj tid och boka direkt utan konto.',
   salonHighlightOneLabel: import.meta.env.VITE_SALON_HIGHLIGHT_ONE_LABEL ?? 'Personlig service',
   salonHighlightOneValue: import.meta.env.VITE_SALON_HIGHLIGHT_ONE_VALUE ?? 'Omsorg i varje detalj',
   salonHighlightTwoLabel: import.meta.env.VITE_SALON_HIGHLIGHT_TWO_LABEL ?? 'Boka utan konto',
