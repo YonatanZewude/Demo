@@ -593,7 +593,10 @@ function PublicBookingSectionInner() {
                 <Check className="h-7 w-7" />
               </div>
               <h2 className="mt-5 text-2xl font-bold text-ink-950">Bokningen skapades</h2>
-              <p className="mt-3 text-sm leading-6 text-ink-900/62">Bekraftelse skickas via e-post.</p>
+              <p className="mt-3 text-sm leading-6 text-ink-900/62">
+                Bekräftelse skickas via e-post när admin har godkänt tiden. Om du inte hittar mejlet i inkorgen,
+                kontrollera skräpposten.
+              </p>
               <Button className="mt-6 min-h-12 w-full text-base" onClick={handleSuccessConfirm} type="button">
                 OK
               </Button>
