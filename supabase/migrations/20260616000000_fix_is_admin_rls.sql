@@ -12,6 +12,10 @@ begin
 end;
 $$;
 
+drop policy if exists "storage upload admin" on storage.objects;
+drop policy if exists "storage delete admin" on storage.objects;
+drop function if exists public.is_admin(text);
+
 create or replace function public.is_admin()
 returns boolean
 language plpgsql
