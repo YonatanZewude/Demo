@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 import { SetupNotice } from '../../components/shared/setup-notice'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
-import { Field, Input, Select, Textarea } from '../../components/ui/field'
+import { Field, Input, Textarea } from '../../components/ui/field'
 import { SectionHeader } from '../../components/ui/section-header'
 import { cn } from '../../lib/cn'
 import { isConfigured } from '../../lib/env'
@@ -360,7 +360,7 @@ function PublicBookingSectionInner() {
                       </label>
                     </div>
 
-                    <div className="mt-4 hidden grid-cols-2 gap-2 sm:mt-5 sm:grid sm:grid-cols-4 lg:grid-cols-7">
+                    <div className="mt-4 grid grid-cols-3 gap-1.5 sm:mt-5 sm:grid-cols-4 sm:gap-2 lg:grid-cols-7">
                       {quickDates.map((date) => {
                         const value = format(date, 'yyyy-MM-dd')
                         const isSelected = bookingDate === value
@@ -368,7 +368,7 @@ function PublicBookingSectionInner() {
                         return (
                           <button
                             className={cn(
-                              'rounded-2xl border px-3 py-4 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                              'rounded-2xl border px-2 py-3 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10 sm:px-3 sm:py-4',
                               isSelected
                                 ? 'border-copper-600 bg-ink-950 text-white shadow-card'
                                 : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
@@ -380,7 +380,7 @@ function PublicBookingSectionInner() {
                             <span className={cn('block text-xs font-bold uppercase', isSelected ? 'text-gold-300' : 'text-copper-700')}>
                               {formatDayLabel(date)}
                             </span>
-                            <span className="mt-1 block text-sm font-semibold">{formatDateLabel(date)}</span>
+                            <span className="mt-1 block text-xs font-semibold sm:text-sm">{formatDateLabel(date)}</span>
                           </button>
                         )
                       })}
@@ -404,27 +404,14 @@ function PublicBookingSectionInner() {
                       </div>
                     </div>
 
-                    <Select
-                      className="mt-4 w-full sm:hidden"
-                      onChange={(event) => form.setValue('start_time', event.target.value, { shouldDirty: true, shouldValidate: true })}
-                      value={startTime}
-                    >
-                      <option value="">Valj en tid</option>
-                      {slots.map((slot) => (
-                        <option key={slot.startTime} value={slot.startTime}>
-                          {slot.label}
-                        </option>
-                      ))}
-                    </Select>
-
-                    <div className="mt-4 hidden grid-cols-2 gap-2 sm:mt-5 sm:grid sm:grid-cols-4 lg:grid-cols-6">
+                    <div className="mt-4 grid max-h-[42dvh] grid-cols-3 gap-1.5 overflow-y-auto pr-1 sm:mt-5 sm:max-h-none sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pr-0 lg:grid-cols-6">
                       {slots.map((slot) => {
                         const isSelected = slot.startTime === startTime
 
                         return (
                           <button
                             className={cn(
-                              'min-h-12 rounded-2xl border px-3 py-3 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                              'min-h-10 rounded-2xl border px-2 py-2 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10 sm:min-h-12 sm:px-3 sm:py-3',
                               isSelected
                                 ? 'border-copper-600 bg-copper-600 text-white shadow-card'
                                 : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',

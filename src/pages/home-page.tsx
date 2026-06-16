@@ -103,30 +103,30 @@ export function HomePage() {
 
         <div className="relative mx-auto flex min-h-[calc(100dvh-5.5rem)] max-w-7xl items-end px-5 pb-10 pt-20 sm:min-h-[calc(100dvh-7rem)] sm:px-8 sm:pb-20 sm:pt-28 lg:px-12 lg:pb-24">
           <div className="max-w-3xl space-y-4 text-white sm:space-y-7">
-            <p className="text-xs font-semibold uppercase tracking-[0.36em] text-gold-300/90 sm:text-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-gold-300/90 sm:tracking-[0.36em]">
               Signaturstil med precision och personlighet
             </p>
 
-            <h1 className="font-serif text-3xl leading-tight tracking-[0.01em] text-white sm:text-5xl sm:leading-[1.02] lg:text-7xl">
+            <h1 className="font-serif text-4xl leading-tight tracking-[0.01em] text-white sm:text-5xl sm:leading-[1.02] lg:text-7xl">
               {env.salonHeroTitle}
             </h1>
 
-            <p className="max-w-2xl text-sm leading-6 text-white/86 sm:text-xl sm:leading-relaxed">
+            <p className="max-w-2xl text-base leading-7 text-white/86 sm:text-xl sm:leading-relaxed">
               {env.salonHeroDescription}
             </p>
 
-            <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4 sm:pt-2">
-              <Link to="/booking" className="inline-flex items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:px-8 sm:py-4 sm:text-base">
+            <div className="flex flex-col items-start gap-2.5 pt-1 sm:flex-row sm:items-center sm:gap-4 sm:pt-2">
+              <Link to="/booking" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-gold-500 bg-gold-400 px-5 py-2 text-sm font-semibold text-ink-950 transition hover:bg-gold-500 sm:px-8 sm:py-4 sm:text-base">
                 Boka tid
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10 sm:px-8 sm:py-4 sm:text-base"
+                className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 sm:px-8 sm:py-4 sm:text-base"
               >
                 Se alla tjänster
               </Link>
-              <InstallAppButton />
+              <InstallAppButton compact />
             </div>
 
             <div className="flex items-center gap-3 pt-4">
