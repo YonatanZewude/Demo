@@ -177,7 +177,7 @@ Deno.serve(async (request) => {
       global: { headers: { Authorization: authHeader } },
     })
 
-    // Keep the privileged update server-side, but first require the caller to be an admin.
+    // Keep the privileged update server-side, bu first require the caller to be an admin.
     const { data: isAdmin, error: adminError } = await userClient.rpc('is_admin')
     if (adminError || !isAdmin) {
       return jsonResponse({ error: 'Forbidden' }, 403)
