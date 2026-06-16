@@ -101,7 +101,7 @@ export function HomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(201,162,39,0.18),transparent_42%),linear-gradient(90deg,rgba(7,7,7,0.74),rgba(7,7,7,0.46)_45%,rgba(7,7,7,0.7))]" />
         </div>
 
-        <div className="relative mx-auto flex min-h-[62vh] max-w-7xl items-end px-5 pb-10 pt-20 sm:min-h-[75vh] sm:px-8 sm:pb-20 sm:pt-28 lg:min-h-[82vh] lg:px-12 lg:pb-24">
+        <div className="relative mx-auto flex min-h-[calc(100dvh-5.5rem)] max-w-7xl items-end px-5 pb-10 pt-20 sm:min-h-[calc(100dvh-7rem)] sm:px-8 sm:pb-20 sm:pt-28 lg:px-12 lg:pb-24">
           <div className="max-w-3xl space-y-4 text-white sm:space-y-7">
             <p className="text-xs font-semibold uppercase tracking-[0.36em] text-gold-300/90 sm:text-sm">
               Signaturstil med precision och personlighet

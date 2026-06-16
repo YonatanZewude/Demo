@@ -147,6 +147,9 @@ export function PublicLayout() {
               >
                 Boka tid
               </Link>
+              <div className="rounded-2xl border border-salon-line bg-white px-4 py-3">
+                <AdminMenuLink />
+              </div>
               <InstallAppButton compact />
             </nav>
           </div>
