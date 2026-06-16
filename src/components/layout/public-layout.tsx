@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Menu, Scissors, Sparkles, X } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { InstallAppButton } from '../pwa/install-app-button'
 import { useAdminAccess } from '../../features/admin/use-admin-access'
 import { env, isConfigured } from '../../lib/env'
 import { cn } from '../../lib/cn'
@@ -101,6 +102,7 @@ export function PublicLayout() {
               </NavLink>
             ))}
             <AdminMenuLink />
+            <InstallAppButton />
             <Link
               to="/booking"
               className="inline-flex items-center justify-center rounded-full border border-gold-500 bg-gold-400 px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-500"
@@ -145,6 +147,7 @@ export function PublicLayout() {
               >
                 Boka tid
               </Link>
+              <InstallAppButton compact />
             </nav>
           </div>
         ) : null}

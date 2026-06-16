@@ -33,10 +33,14 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   body {
     @apply min-h-screen bg-sand-50 font-sans text-ink-900 antialiased;
+    overflow-x: hidden;
+    width: 100%;
     background-image:
       radial-gradient(circle at top left, rgba(201, 162, 39, 0.12), transparent 28%),
       radial-gradient(circle at 85% 12%, rgba(201, 162, 39, 0.08), transparent 24%),
@@ -61,6 +65,8 @@
 
   #root {
     @apply min-h-screen;
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="App icon">
+  <rect width="512" height="512" rx="112" fill="#111111"/>
+  <rect x="54" y="54" width="404" height="404" rx="92" fill="url(#gold)"/>
+  <rect x="88" y="88" width="336" height="336" rx="72" fill="#111111" opacity="0.92"/>
+  <path d="M174 162l164 188M338 162L174 350" stroke="#ead7a1" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="174" cy="162" r="35" fill="none" stroke="#ead7a1" stroke-width="22"/>
+  <circle cx="338" cy="162" r="35" fill="none" stroke="#ead7a1" stroke-width="22"/>
+  <defs>
+    <linearGradient id="gold" x1="80" x2="432" y1="70" y2="454" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d8b965"/>
+      <stop offset="1" stop-color="#b9911d"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "name": "Ethioglow",
+  "short_name": "Ethioglow",
+  "description": "Boka tid, se tjänster och galleri direkt från mobilen.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#111111",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
