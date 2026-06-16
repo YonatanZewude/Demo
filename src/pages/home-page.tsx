@@ -6,12 +6,9 @@ import {
   Star,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { PageShell } from '../components/shell/page-shell'
 import { cn } from '../lib/cn'
-import { env, isConfigured } from '../lib/env'
-import { getPublicSupabaseClient } from '../lib/supabase'
-import { fetchActiveGalleryImages } from '../features/gallery/gallery-api'
+import { env } from '../lib/env'
 import { demoReviews } from '../features/reviews/reviews-data'
 import bil1Image from '../assets/img/bil1.jpg'
 import bild2Image from '../assets/img/bild2.png'
@@ -66,26 +63,7 @@ export function HomePage() {
     })
   }
 
-  const galleryQuery = useQuery({
-    enabled: isConfigured.supabase,
-    queryKey: ['gallery', 'public'],
-    queryFn: () => fetchActiveGalleryImages(getPublicSupabaseClient()),
-  })
-
-  const galleryImages = galleryQuery.data?.length
-    ? galleryQuery.data.map((img) => ({
-        title: img.title,
-        image: img.image_url,
-      }))
-    : fallbackImages
-
-  const heroSlides = useMemo(() => {
-    if (galleryImages.length >= 3) {
-      return galleryImages.slice(0, 3)
-    }
-
-    return fallbackImages
-  }, [galleryImages])
+  const heroSlides = useMemo(() => fallbackImages, [])
 
   useEffect(() => {
     setActiveHeroIndex(0)
@@ -178,7 +156,7 @@ export function HomePage() {
           </div>
 
           <div className="grid gap-3 sm:gap-6 md:grid-cols-2">
-            {galleryImages.map((item, index) => (
+            {fallbackImages.map((item, index) => (
               <div 
                 key={item.title} 
                 className={`relative overflow-hidden rounded-3xl ${
