@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 import { SetupNotice } from '../../components/shared/setup-notice'
 import { Button } from '../../components/ui/button'
 import { Card } from '../../components/ui/card'
-import { Field, Input, Textarea } from '../../components/ui/field'
+import { Field, Input, Select, Textarea } from '../../components/ui/field'
 import { SectionHeader } from '../../components/ui/section-header'
 import { cn } from '../../lib/cn'
 import { isConfigured } from '../../lib/env'
@@ -36,7 +36,7 @@ import { bookingFormSchema, type BookingFormValues } from './booking-schema'
 const minDate = format(startOfToday(), 'yyyy-MM-dd')
 const quickDates = Array.from({ length: 14 }, (_, index) => addDays(startOfToday(), index))
 
-type BookingStep = 'time' | 'contact' | 'summary'
+type BookingStep = 'date' | 'time' | 'contact' | 'summary'
 
 function formatDayLabel(date: Date) {
   return new Intl.DateTimeFormat('sv-SE', { weekday: 'short' }).format(date)
@@ -61,7 +61,7 @@ function PublicBookingSectionInner() {
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [step, setStep] = useState<BookingStep>('time')
+  const [step, setStep] = useState<BookingStep>('date')
 
   const servicesQuery = useQuery({
     queryKey: ['services', 'active'],
@@ -152,7 +152,7 @@ function PublicBookingSectionInner() {
     onSuccess: () => {
       setIsModalOpen(false)
       setIsSuccessModalOpen(true)
-      setStep('time')
+      setStep('date')
       form.reset({
         service_id: '',
         booking_date: minDate,
@@ -171,15 +171,36 @@ function PublicBookingSectionInner() {
   const openBookingModal = (serviceId: string) => {
     form.setValue('service_id', serviceId, { shouldDirty: true, shouldValidate: true })
     form.setValue('start_time', '', { shouldDirty: true })
-    setStep('time')
+    setStep('date')
     setIsModalOpen(true)
   }
 
+  const goToTime = async () => {
+    const isValid = await form.trigger(['service_id', 'booking_date'])
+    if (isValid) {
+      setStep('time')
+    }
+  }
+
   const goToContact = async () => {
-    const isValid = await form.trigger(['service_id', 'booking_date', 'start_time'])
+    const isValid = await form.trigger(['start_time'])
     if (isValid) {
       setStep('contact')
     }
+  }
+
+  const goBack = () => {
+    if (step === 'summary') {
+      setStep('contact')
+      return
+    }
+
+    if (step === 'contact') {
+      setStep('time')
+      return
+    }
+
+    setStep('date')
   }
 
   const goToSummary = async () => {
@@ -264,23 +285,29 @@ function PublicBookingSectionInner() {
         <div className="fixed inset-0 z-50 overflow-y-auto bg-ink-950/45 px-3 py-4 backdrop-blur-sm sm:px-6 sm:py-8">
           <div className="mx-auto flex min-h-full w-full max-w-4xl items-center justify-center">
             <form
-              className="w-full overflow-hidden rounded-[28px] bg-white shadow-soft"
+              className="flex max-h-[calc(100dvh-1.5rem)] w-full flex-col overflow-hidden rounded-[28px] bg-white shadow-soft"
               onSubmit={form.handleSubmit((values) => bookingMutation.mutate(values))}
             >
               <input type="hidden" {...form.register('service_id')} />
               <input type="hidden" {...form.register('start_time')} />
 
-              <div className="surface-gold border-b border-salon-line p-4 sm:p-6">
+              <div className="surface-gold shrink-0 border-b border-salon-line p-4 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <div className="grid h-11 w-11 place-items-center rounded-2xl bg-ink-950 text-gold-300">
+                    <div className="hidden h-11 w-11 place-items-center rounded-2xl bg-ink-950 text-gold-300 sm:grid">
                       <Sparkles className="h-5 w-5" />
                     </div>
-                    <p className="mt-5 text-xs font-bold uppercase tracking-[0.28em] text-copper-700">Din bokning</p>
-                    <h2 className="mt-2 text-2xl font-bold text-ink-950">
-                      {step === 'time' ? 'Valj dag och tid' : step === 'contact' ? 'Dina uppgifter' : 'Sammanfattning'}
+                    <p className="text-xs font-bold uppercase tracking-[0.28em] text-copper-700 sm:mt-5">Din bokning</p>
+                    <h2 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">
+                      {step === 'date'
+                        ? 'Valj en dag'
+                        : step === 'time'
+                          ? 'Valj tid'
+                          : step === 'contact'
+                            ? 'Dina uppgifter'
+                            : 'Sammanfattning'}
                     </h2>
-                    <p className="mt-2 text-sm leading-6 text-ink-900/62">
+                    <p className="mt-1.5 text-sm leading-5 text-ink-900/62 sm:mt-2 sm:leading-6">
                       {selectedService ? `${selectedService.name} - ${selectedService.duration_minutes} min / ${selectedService.price} SEK` : 'Valj behandling'}
                     </p>
                   </div>
@@ -294,15 +321,16 @@ function PublicBookingSectionInner() {
                   </button>
                 </div>
 
-                <div className="mt-5 grid grid-cols-3 gap-2 text-xs font-bold uppercase tracking-[0.16em]">
+                <div className="mt-4 grid grid-cols-4 gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] sm:mt-5 sm:gap-2 sm:text-xs sm:tracking-[0.16em]">
                   {[
+                    ['date', 'Datum'],
                     ['time', 'Tid'],
                     ['contact', 'Kontakt'],
                     ['summary', 'Bokning'],
                   ].map(([itemStep, label]) => (
                     <span
                       className={cn(
-                        'rounded-full px-3 py-2 text-center',
+                        'rounded-full px-2 py-2 text-center sm:px-3',
                         step === itemStep ? 'bg-ink-950 text-gold-300' : 'bg-white/75 text-ink-900/48',
                       )}
                       key={itemStep}
@@ -313,109 +341,122 @@ function PublicBookingSectionInner() {
                 </div>
               </div>
 
-              <div className="max-h-[70vh] overflow-y-auto p-4 sm:p-6">
+              <div className="flex-1 overflow-hidden p-4 sm:p-6">
+                {step === 'date' ? (
+                  <section>
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Datum</p>
+                        <h3 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Valj en dag</h3>
+                      </div>
+                      <label className="inline-flex w-full items-center gap-2 rounded-full border border-salon-line bg-white px-3 py-2 text-sm font-semibold text-ink-950 sm:w-auto sm:gap-3 sm:px-4">
+                        <CalendarDays className="h-4 w-4 text-copper-700" />
+                        <Input
+                          className="min-h-0 flex-1 border-0 bg-transparent p-0 focus:ring-0 sm:w-36 sm:flex-none"
+                          min={minDate}
+                          type="date"
+                          {...form.register('booking_date')}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mt-4 hidden grid-cols-2 gap-2 sm:mt-5 sm:grid sm:grid-cols-4 lg:grid-cols-7">
+                      {quickDates.map((date) => {
+                        const value = format(date, 'yyyy-MM-dd')
+                        const isSelected = bookingDate === value
+
+                        return (
+                          <button
+                            className={cn(
+                              'rounded-2xl border px-3 py-4 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                              isSelected
+                                ? 'border-copper-600 bg-ink-950 text-white shadow-card'
+                                : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
+                            )}
+                            key={value}
+                            onClick={() => form.setValue('booking_date', value, { shouldDirty: true, shouldValidate: true })}
+                            type="button"
+                          >
+                            <span className={cn('block text-xs font-bold uppercase', isSelected ? 'text-gold-300' : 'text-copper-700')}>
+                              {formatDayLabel(date)}
+                            </span>
+                            <span className="mt-1 block text-sm font-semibold">{formatDateLabel(date)}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                    {form.formState.errors.booking_date ? (
+                      <p className="mt-3 text-sm font-medium text-red-600">{form.formState.errors.booking_date.message}</p>
+                    ) : null}
+                  </section>
+                ) : null}
+
                 {step === 'time' ? (
-                  <div className="grid gap-5">
-                    <section>
-                      <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Datum</p>
-                          <h3 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Valj en dag</h3>
-                        </div>
-                        <label className="inline-flex items-center gap-2 rounded-full border border-salon-line bg-white px-3 py-2 text-sm font-semibold text-ink-950 sm:gap-3 sm:px-4">
-                          <CalendarDays className="h-4 w-4 text-copper-700" />
-                          <Input
-                            className="min-h-0 w-32 border-0 bg-transparent p-0 focus:ring-0 sm:w-36"
-                            min={minDate}
-                            type="date"
-                            {...form.register('booking_date')}
-                          />
-                        </label>
+                  <section>
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Tid</p>
+                        <h3 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Lediga tider</h3>
+                        <p className="mt-2 text-sm text-ink-900/60">{selectedDateLabel}</p>
                       </div>
-
-                      <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:grid-cols-4 lg:grid-cols-7">
-                        {quickDates.map((date) => {
-                          const value = format(date, 'yyyy-MM-dd')
-                          const isSelected = bookingDate === value
-
-                          return (
-                            <button
-                              className={cn(
-                                'rounded-2xl border px-3 py-4 text-center transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
-                                isSelected
-                                  ? 'border-copper-600 bg-ink-950 text-white shadow-card'
-                                  : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
-                              )}
-                              key={value}
-                              onClick={() => form.setValue('booking_date', value, { shouldDirty: true, shouldValidate: true })}
-                              type="button"
-                            >
-                              <span className={cn('block text-xs font-bold uppercase', isSelected ? 'text-gold-300' : 'text-copper-700')}>
-                                {formatDayLabel(date)}
-                              </span>
-                              <span className="mt-1 block text-sm font-semibold">{formatDateLabel(date)}</span>
-                            </button>
-                          )
-                        })}
+                      <div className="rounded-full bg-sand-100 px-3 py-1.5 text-sm font-semibold text-ink-950 sm:px-4 sm:py-2">
+                        {slots.length} tider
                       </div>
-                      {form.formState.errors.booking_date ? (
-                        <p className="mt-3 text-sm font-medium text-red-600">{form.formState.errors.booking_date.message}</p>
-                      ) : null}
-                    </section>
+                    </div>
 
-                    <section>
-                      <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Tid</p>
-                          <h3 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Lediga tider</h3>
-                          <p className="mt-2 text-sm text-ink-900/60">{selectedDateLabel}</p>
-                        </div>
-                        <div className="rounded-full bg-sand-100 px-3 py-1.5 text-sm font-semibold text-ink-950 sm:px-4 sm:py-2">
-                          {slots.length} tider
-                        </div>
+                    <Select
+                      className="mt-4 w-full sm:hidden"
+                      onChange={(event) => form.setValue('start_time', event.target.value, { shouldDirty: true, shouldValidate: true })}
+                      value={startTime}
+                    >
+                      <option value="">Valj en tid</option>
+                      {slots.map((slot) => (
+                        <option key={slot.startTime} value={slot.startTime}>
+                          {slot.label}
+                        </option>
+                      ))}
+                    </Select>
+
+                    <div className="mt-4 hidden grid-cols-2 gap-2 sm:mt-5 sm:grid sm:grid-cols-4 lg:grid-cols-6">
+                      {slots.map((slot) => {
+                        const isSelected = slot.startTime === startTime
+
+                        return (
+                          <button
+                            className={cn(
+                              'min-h-12 rounded-2xl border px-3 py-3 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
+                              isSelected
+                                ? 'border-copper-600 bg-copper-600 text-white shadow-card'
+                                : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
+                            )}
+                            key={slot.startTime}
+                            onClick={() => form.setValue('start_time', slot.startTime, { shouldDirty: true, shouldValidate: true })}
+                            type="button"
+                          >
+                            {slot.label}
+                          </button>
+                        )
+                      })}
+                    </div>
+
+                    {!slots.length ? (
+                      <div className="mt-4 rounded-3xl border border-dashed border-salon-line bg-sand-50 p-5 text-sm leading-6 text-ink-900/62">
+                        Inga tider visas for vald dag. Prova en annan dag eller kontrollera att behandlingen har lediga tider.
                       </div>
-
-                      <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:grid-cols-4 lg:grid-cols-6">
-                        {slots.map((slot) => {
-                          const isSelected = slot.startTime === startTime
-
-                          return (
-                            <button
-                              className={cn(
-                                'min-h-12 rounded-2xl border px-3 py-3 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-copper-600/10',
-                                isSelected
-                                  ? 'border-copper-600 bg-copper-600 text-white shadow-card'
-                                  : 'border-salon-line bg-white text-ink-950 hover:border-copper-600/55 hover:bg-sand-50',
-                              )}
-                              key={slot.startTime}
-                              onClick={() => form.setValue('start_time', slot.startTime, { shouldDirty: true, shouldValidate: true })}
-                              type="button"
-                            >
-                              {slot.label}
-                            </button>
-                          )
-                        })}
-                      </div>
-
-                      {!slots.length ? (
-                        <div className="mt-4 rounded-3xl border border-dashed border-salon-line bg-sand-50 p-5 text-sm leading-6 text-ink-900/62">
-                          Inga tider visas for vald dag. Prova en annan dag eller kontrollera att behandlingen har lediga tider.
-                        </div>
-                      ) : null}
-                      {form.formState.errors.start_time ? (
-                        <p className="mt-3 text-sm font-medium text-red-600">{form.formState.errors.start_time.message}</p>
-                      ) : null}
-                    </section>
-                  </div>
+                    ) : null}
+                    {form.formState.errors.start_time ? (
+                      <p className="mt-3 text-sm font-medium text-red-600">{form.formState.errors.start_time.message}</p>
+                    ) : null}
+                  </section>
                 ) : null}
 
                 {step === 'contact' ? (
                   <div>
-                    <div className="mb-4 sm:mb-5">
+                    <div className="mb-3 sm:mb-5">
                       <p className="text-sm font-bold uppercase tracking-[0.28em] text-copper-700">Kontakt</p>
                       <h3 className="mt-1.5 text-xl font-bold text-ink-950 sm:mt-2 sm:text-2xl">Dina uppgifter</h3>
                     </div>
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                       <Field error={form.formState.errors.customer_name?.message} label="Namn">
                         <Input placeholder="Anna Andersson" {...form.register('customer_name')} />
                       </Field>
@@ -423,19 +464,19 @@ function PublicBookingSectionInner() {
                         <Input placeholder="0701234567" {...form.register('customer_phone')} />
                       </Field>
                     </div>
-                    <div className="mt-4 grid gap-4">
+                    <div className="mt-3 grid gap-3 sm:mt-4 sm:gap-4">
                       <Field error={form.formState.errors.customer_email?.message} label="E-post">
                         <Input placeholder="anna@example.com" type="email" {...form.register('customer_email')} />
                       </Field>
                       <Field error={form.formState.errors.customer_message?.message} hint="Valfritt" label="Meddelande">
-                        <Textarea placeholder="Skriv om du har onskemal eller fragor" {...form.register('customer_message')} />
+                        <Textarea className="min-h-16 sm:min-h-28" placeholder="Skriv om du har onskemal eller fragor" {...form.register('customer_message')} />
                       </Field>
                     </div>
                   </div>
                 ) : null}
 
                 {step === 'summary' ? (
-                  <div className="grid gap-4">
+                  <div className="grid gap-3 sm:gap-4">
                     <div className="rounded-3xl bg-sand-50 p-4 sm:p-5">
                       <p className="text-xs font-bold uppercase tracking-[0.22em] text-copper-700">Behandling</p>
                       <p className="mt-2 text-lg font-bold text-ink-950">{selectedService?.name ?? 'Inte vald'}</p>
@@ -495,15 +536,15 @@ function PublicBookingSectionInner() {
                 ) : null}
               </div>
 
-              <div className="flex flex-col-reverse gap-3 border-t border-salon-line bg-sand-50 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-                {step === 'time' ? (
+              <div className="flex shrink-0 flex-col-reverse gap-3 border-t border-salon-line bg-sand-50 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                {step === 'date' ? (
                   <Button className="min-h-12" onClick={() => setIsModalOpen(false)} type="button" variant="secondary">
                     Avbryt
                   </Button>
                 ) : (
                   <Button
                     className="min-h-12"
-                    onClick={() => setStep(step === 'summary' ? 'contact' : 'time')}
+                    onClick={goBack}
                     type="button"
                     variant="secondary"
                   >
@@ -511,6 +552,13 @@ function PublicBookingSectionInner() {
                     Tillbaka
                   </Button>
                 )}
+
+                {step === 'date' ? (
+                  <Button className="min-h-12 text-base sm:min-w-48" disabled={!bookingDate} onClick={goToTime} type="button">
+                    Nasta
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                ) : null}
 
                 {step === 'time' ? (
                   <Button className="min-h-12 text-base sm:min-w-48" disabled={!startTime || !slots.length} onClick={goToContact} type="button">
